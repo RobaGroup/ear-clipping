@@ -49,6 +49,7 @@ namespace Vr_Gl.Graphics
             Cutted.Draw();
             SwapBuffers();
             clicked = false;
+            move = new Vector3m(0, 0, 0);
         }
 
         protected override void OnResize(EventArgs e)
@@ -69,6 +70,7 @@ namespace Vr_Gl.Graphics
         {
             base.OnKeyDown(e);
             string key = e.Key.ToString().ToLower();
+            float delta = 0.5f;
             switch (key)
             {
                 case "k":
@@ -78,19 +80,19 @@ namespace Vr_Gl.Graphics
                     z += 1;
                     break;
                 case "w":
-                    move.Z = move.Z - 1;
+                    move.Z = move.Z - delta;
                     clicked = true;
                     break;
                 case "s":
-                    move.Z = move.Z + 1;
+                    move.Z = move.Z + delta;
                     clicked = true;
                     break;
                 case "a":
-                    move.X = move.X - 1;
+                    move.X = move.X - delta;
                     clicked = true;
                     break;
                 case "d":
-                    move.X = move.X + 1;
+                    move.X = move.X + delta;
                     clicked = true;
                     break;
             }

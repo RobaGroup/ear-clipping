@@ -42,6 +42,11 @@ namespace Vr_Gl.Simulation
             {
                 var tri = Triangles[i];
                 EarClipping clipper = new EarClipping();
+                if(intersectedTris[i].Count == 0)
+                {
+                    tris.Add(tri);
+                    continue;
+                }
                 var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
                 List<List<Vector3m>> holes = new List<List<Vector3m>>();
                 List<Vector3m> temp = new List<Vector3m>();

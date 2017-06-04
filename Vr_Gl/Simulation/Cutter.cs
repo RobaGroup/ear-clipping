@@ -17,7 +17,7 @@ namespace Vr_Gl.Simulation
 
         public Cutter(string fileName)
         {
-            Tree = new AabbTree(new Loader().Load(fileName));
+            Tree = new AabbTree(new Loader(1000).Load(fileName));
         }
 
         public Cutter(string fileName, Vector3m initialPos) : this(fileName)

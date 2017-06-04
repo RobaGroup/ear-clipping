@@ -80,10 +80,6 @@ namespace Triangulation
                 }
                 ConnectionEdge current = new ConnectionEdge(p0, polygon);
                 first = (i == 0) ? current : first; // remember first
-                if(i == 0)
-                {
-                    Console.WriteLine(current.ToString());
-                }
                 if (prev != null)
                 {
                     prev.Next = current;
