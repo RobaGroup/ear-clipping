@@ -77,7 +77,7 @@ namespace Vr_Gl.Graphics
         {
             base.OnKeyDown(e);
             string key = e.Key.ToString().ToLower();
-            float delta = 0.5f;
+            float delta = 0.15f;
             switch (key)
             {
                 case "k":

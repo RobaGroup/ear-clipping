@@ -18,13 +18,14 @@ namespace Intersection
             }
         }
 
-        public static List<Tuple<bool, Segment>> Detect(Triangle tri, List<Triangle> tris)
+        public static List<Segment> Detect(Triangle tri, List<Triangle> tris)
         {
-            List<Tuple<bool, Segment>> res = new List<Tuple<bool, Segment>>();
+            List<Segment> res = new List<Segment>();
             foreach (var t in tris)
             {
                 var temp = Triangle.Intersection(tri, t);
-                res.Add(temp);
+                if(temp.Item1)
+                    res.Add(temp.Item2);
             }
             return res;
         }

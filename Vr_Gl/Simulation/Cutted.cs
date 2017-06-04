@@ -61,16 +61,15 @@ namespace Vr_Gl.Simulation
                 var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
                 List<List<Vector3>> holes = new List<List<Vector3>>();
                 List<Vector3> temp = new List<Vector3>();
+                Console.WriteLine(tri.ToString());
+                Console.WriteLine(intersectedTris[0][0].ToString());
                 for (int j = 0; j < result.Count; j++)
                 {
-                    if (result[j].Item1)
-                    {
-                        Console.WriteLine("In");
-                        temp.Add(result[j].Item2.V1);
-                        temp.Add(result[j].Item2.V2);
-                    }
+                     Console.WriteLine("In");
+                     temp.Add(result[j].V1);
+                     temp.Add(result[j].V2);
                 }
-                if (temp.Count >= 3)
+                if (result.Count >= 2)
                 {
                     holes.Add(temp);
                     List<Vector3> points = tri.Points();
