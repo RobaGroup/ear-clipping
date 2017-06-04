@@ -27,6 +27,11 @@ namespace Vr_Gl.Simulation
             this.Cutter = cutter;
         }
 
+        public Cutted(List<Triangle> tris, Cutter cutter, Vector3m initialPos) : this(tris, cutter)
+        {
+            this.Move(initialPos);
+        }
+
         public Cutted(string fileName, Cutter cutter, Vector3m initialPos) : this(fileName, cutter)
         {
             this.Move(initialPos);

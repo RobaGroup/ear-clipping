@@ -26,6 +26,12 @@ namespace Vr_Gl.Graphics
             Cutter = new Cutter(cutterFileName);
             Cutted = new Cutted(cuttedFileName, Cutter, new Vector3m(-5, 0, -2));
         }
+
+        public MainWindow(List<Triangle> cutterTris, List<Triangle> cuttedTris)
+        {
+            Cutter = new Cutter(cutterTris);
+            Cutted = new Cutted(cuttedTris, Cutter, new Vector3m(-3, 0, -1.5));
+        }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
