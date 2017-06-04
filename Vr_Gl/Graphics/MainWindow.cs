@@ -16,7 +16,7 @@ namespace Vr_Gl.Graphics
 {
     class MainWindow : GameWindow
     {
-        double z = 0;
+        double x = 0, y = 0, z = 0;
         bool clicked = false;
         Vector3m move = new Vector3m(0, 0, 0);
         public Cutter Cutter { get; set; }
@@ -24,13 +24,14 @@ namespace Vr_Gl.Graphics
         public MainWindow(string cutterFileName, string cuttedFileName)
         {
             Cutter = new Cutter(cutterFileName);
-            Cutted = new Cutted(cuttedFileName, Cutter, new Vector3m(-5, 0, -5));
+            Cutted = new Cutted(cuttedFileName, Cutter, new Vector3m(-5, 0, -2));
         }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             Title = "Test";
             GL.ClearColor(0, 0, 0, 0);
+            GL.Enable(EnableCap.DepthTest);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -39,14 +40,14 @@ namespace Vr_Gl.Graphics
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
-            GL.Translate(0, 0, z);
+            GL.Translate(x, y, z);
             if (clicked)
             {
                 Cutter.Move(move);
                 Cutted.Update();
             }
-            Cutter.Draw();
-            Cutted.Draw();
+            Cutter.Draw(new Vector3m(1, 1, 1));
+            Cutted.Draw(new Vector3m(0.2, 0.6, 0.4));
             SwapBuffers();
             clicked = false;
             move = new Vector3m(0, 0, 0);
@@ -78,6 +79,12 @@ namespace Vr_Gl.Graphics
                     break;
                 case "i":
                     z += 1;
+                    break;
+                case "j":
+                    x -= 1;
+                    break;
+                case "l":
+                    x += 1;
                     break;
                 case "w":
                     move.Z = move.Z - delta;

@@ -35,11 +35,12 @@ namespace Vr_Gl.Simulation
             Tree.Move(trans);
         }
 
-        public void Draw()
+        public void Draw(Vector3m color)
         {
             for(int i = 0; i < Tree.Triangles.Count; ++i)
             {
                 var tri = Tree.Triangles[i];
+                GL.Color3(color.X, color.Y, color.Z);
                 GL.Begin(BeginMode.Triangles);
                 GL.Vertex3(tri.V1.Data());
                 GL.Vertex3(tri.V2.Data());

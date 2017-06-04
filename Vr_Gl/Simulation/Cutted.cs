@@ -41,12 +41,12 @@ namespace Vr_Gl.Simulation
             for (int i = 0; i < Triangles.Count; i++)
             {
                 var tri = Triangles[i];
-                EarClipping clipper = new EarClipping();
                 if(intersectedTris[i].Count == 0)
                 {
                     tris.Add(tri);
                     continue;
                 }
+                Console.WriteLine(i);
                 var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
                 List<List<Vector3m>> holes = new List<List<Vector3m>>();
                 List<Vector3m> temp = new List<Vector3m>();
@@ -58,10 +58,11 @@ namespace Vr_Gl.Simulation
                         temp.Add(result[j].Item2.V2);
                     }
                 }
-                if (temp.Count <= 1)
+                if (temp.Count >= 2)
                 {
                     holes.Add(temp);
                     List<Vector3m> points = tri.Points();
+                    EarClipping clipper = new EarClipping();
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
                     var t = clipper.Result;
@@ -78,11 +79,12 @@ namespace Vr_Gl.Simulation
             this.Triangles = tris;
         }
 
-        public void Draw()
+        public void Draw(Vector3m color)
         {
             for(int i = 0; i < Triangles.Count; ++i)
             {
                 var tri = Triangles[i];
+                GL.Color3(color.X, color.Y, color.Z);
                 GL.Begin(BeginMode.Triangles);
                 GL.Vertex3(tri.V1.Data());
                 GL.Vertex3(tri.V2.Data());
