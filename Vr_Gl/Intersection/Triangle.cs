@@ -10,15 +10,15 @@ namespace Intersection
 {
     public class Triangle : IComparable<Triangle>
     {
-        public Vector3m V1 { private set; get; }
+        public Vector3 V1 { private set; get; }
 
-        public Vector3m V2 { private set; get; }
+        public Vector3 V2 { private set; get; }
 
-        public Vector3m V3 { private set; get; }
+        public Vector3 V3 { private set; get; }
 
         public Plane plane { private set; get; }
 
-        public Triangle(Vector3m v1, Vector3m v2, Vector3m v3)
+        public Triangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             this.V1 = v1;
             this.V2 = v2;
@@ -27,7 +27,7 @@ namespace Intersection
 
         public void ComputePlane()
         {
-            Vector3m n = (V2 - V1).Cross(V3 - V1);
+            Vector3 n = (V2 - V1).Cross(V3 - V1);
             plane = new Plane(n, -n.Dot(V1));
         }
 
@@ -206,16 +206,16 @@ namespace Intersection
             return min1 < min2 ? -1 : min1 == min2 ? 0 : 1;
         }
 
-        public void Move(Vector3m trans)
+        public void Move(Vector3 trans)
         {
             this.V1 = this.V1 + trans;
             this.V2 = this.V2 + trans;
             this.V3 = this.V3 + trans;
         }
 
-        public List<Vector3m> Points()
+        public List<Vector3> Points()
         {
-            return new Vector3m[] { V1, V2, V3 }.ToList();
+            return new Vector3[] { V1, V2, V3 }.ToList();
         }
     }
 }

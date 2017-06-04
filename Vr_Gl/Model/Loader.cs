@@ -31,7 +31,7 @@ namespace Vr_Gl.Model
                     Vector3D p1 = mesh.Vertices[face.Indices[0]],
                              p2 = mesh.Vertices[face.Indices[1]],
                              p3 = mesh.Vertices[face.Indices[2]];
-                    tris.Add(new Triangle(new Vector3m(p1.X, p1.Y, p1.Z) / factor, new Vector3m(p2.X, p2.Y, p2.Z) / factor, new Vector3m(p3.X, p3.Y, p3.Z) / factor));
+                    tris.Add(new Triangle(new Vector3(p1.X, p1.Y, p1.Z) / factor, new Vector3(p2.X, p2.Y, p2.Z) / factor, new Vector3(p3.X, p3.Y, p3.Z) / factor));
                 }
             }
             return tris;

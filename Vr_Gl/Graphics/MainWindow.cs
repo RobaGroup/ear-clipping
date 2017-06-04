@@ -18,19 +18,19 @@ namespace Vr_Gl.Graphics
     {
         double x = 0, y = 0, z = 0;
         bool clicked = false;
-        Vector3m move = new Vector3m(0, 0, 0);
+        Triangulation.Vector3 move = new Triangulation.Vector3(0, 0, 0);
         public Cutter Cutter { get; set; }
         public Cutted Cutted { get; set; }
         public MainWindow(string cutterFileName, string cuttedFileName)
         {
             Cutter = new Cutter(cutterFileName);
-            Cutted = new Cutted(cuttedFileName, Cutter, new Vector3m(-5, 0, -2));
+            Cutted = new Cutted(cuttedFileName, Cutter, new Triangulation.Vector3(-5, 0, -2));
         }
 
         public MainWindow(List<Triangle> cutterTris, List<Triangle> cuttedTris)
         {
             Cutter = new Cutter(cutterTris);
-            Cutted = new Cutted(cuttedTris, Cutter, new Vector3m(-3, 0, -1.5));
+            Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5));
         }
         protected override void OnLoad(EventArgs e)
         {
@@ -52,11 +52,11 @@ namespace Vr_Gl.Graphics
                 Cutter.Move(move);
                 Cutted.Update();
             }
-            Cutter.Draw(new Vector3m(1, 1, 1));
-            Cutted.Draw(new Vector3m(0.2, 0.6, 0.4));
+            Cutter.Draw(new Triangulation.Vector3(1, 1, 1));
+            Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
             SwapBuffers();
             clicked = false;
-            move = new Vector3m(0, 0, 0);
+            move = new Triangulation.Vector3(0, 0, 0);
         }
 
         protected override void OnResize(EventArgs e)

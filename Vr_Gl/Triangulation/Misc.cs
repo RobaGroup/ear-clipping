@@ -8,7 +8,7 @@ namespace Triangulation
 {
     class Misc
     {
-        public static int GetOrientation(Vector3m v0, Vector3m v1, Vector3m v2, Vector3m normal)
+        public static int GetOrientation(Vector3 v0, Vector3 v1, Vector3 v2, Vector3 normal)
         {
            
             var res = (v0 - v1).Cross(v2 - v1);
@@ -24,7 +24,7 @@ namespace Triangulation
         // > 0 if strictly yes
         // < 0 if strictly no
         // = 0 if testPoint lies either on a or on b
-        public static int IsBetween(Vector3m Origin, Vector3m a, Vector3m b, Vector3m testPoint, Vector3m normal)
+        public static int IsBetween(Vector3 Origin, Vector3 a, Vector3 b, Vector3 testPoint, Vector3 normal)
         {
             var psca = GetOrientation(Origin, a, testPoint, normal);
             var pscb = GetOrientation(Origin, b, testPoint, normal);
@@ -87,7 +87,7 @@ namespace Triangulation
             return -1;
         }
 
-        public static bool PointInOrOnTriangle(Vector3m prevPoint, Vector3m curPoint, Vector3m nextPoint, Vector3m nonConvexPoint, Vector3m normal)
+        public static bool PointInOrOnTriangle(Vector3 prevPoint, Vector3 curPoint, Vector3 nextPoint, Vector3 nonConvexPoint, Vector3 normal)
         {
             var res0 = Misc.GetOrientation(prevPoint, nonConvexPoint, curPoint, normal);
             var res1 = Misc.GetOrientation(curPoint, nonConvexPoint, nextPoint, normal);
@@ -95,7 +95,7 @@ namespace Triangulation
             return res0 != 1 && res1 != 1 && res2 != 1;
         }
 
-        public static double PointLineDistance(Vector3m p1, Vector3m p2, Vector3m p3)
+        public static double PointLineDistance(Vector3 p1, Vector3 p2, Vector3 p3)
         {
             return (p2 - p1).Cross(p3 - p1).LengthSquared();
         }

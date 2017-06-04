@@ -24,7 +24,7 @@ namespace Tree
                    (MinZ <= b.MaxZ && MaxZ >= b.MinZ);
         }
 
-        public Aabb(List<Vector3m> vertices)
+        public Aabb(List<Vector3> vertices)
         {
             MinX = MaxX = vertices[0].X;
             MinY = MaxY = vertices[0].Y;
@@ -98,7 +98,7 @@ namespace Tree
             MaxZ = Math.Max(MaxZ, tri.V3.Z);
         }
 
-        public void Move(Vector3m trans)
+        public void Move(Vector3 trans)
         {
             this.MinX += trans.X;
             this.MaxX += trans.X;

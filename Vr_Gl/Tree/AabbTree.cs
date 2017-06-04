@@ -25,7 +25,7 @@ namespace Tree
             _create(ref _root, 0, Triangles.Count - 1);
         }
 
-        public AabbTree(List<Vector3m> points)
+        public AabbTree(List<Vector3> points)
         {
             Triangles = new List<Triangle>();
             for (int i = 0; i < points.Count - 2; i += 3)
@@ -58,7 +58,7 @@ namespace Tree
             _create(ref node._right, leftIndex + len / 2 + 1, rightIndex);
         }
         
-        public void Move(Vector3m trans)
+        public void Move(Vector3 trans)
         {
             for (int i = 0; i < Triangles.Count; i++)
             {

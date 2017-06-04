@@ -12,10 +12,10 @@ namespace Triangulation
     {
         private Polygon _mainPointList;
         private List<Polygon> _holes;
-        private Vector3m Normal;
-        public List<Vector3m> Result { get; private set; }
+        private Vector3 Normal;
+        public List<Vector3> Result { get; private set; }
 
-        public void SetPoints(List<Vector3m> points, List<List<Vector3m>> holes = null, Vector3m normal = null)
+        public void SetPoints(List<Vector3> points, List<List<Vector3>> holes = null, Vector3 normal = null)
         {
             if (points == null || points.Count < 3)
             {
@@ -40,13 +40,13 @@ namespace Triangulation
                     _holes.Add(p);
                 }
             }
-            Result = new List<Vector3m>();
+            Result = new List<Vector3>();
         }
 
         // calculating normal using Newell's method
-        private void CalcNormal(List<Vector3m> points)
+        private void CalcNormal(List<Vector3> points)
         {
-            Vector3m normal = Vector3m.Zero();
+            Vector3 normal = Vector3.Zero();
             for (var i = 0; i < points.Count; i++)
             {
                 var j = (i + 1) % (points.Count);
@@ -57,15 +57,15 @@ namespace Triangulation
             Normal = normal;
         }
 
-        private void LinkAndAddToList(Polygon polygon, List<Vector3m> points)
+        private void LinkAndAddToList(Polygon polygon, List<Vector3> points)
         {
             ConnectionEdge prev = null, first = null;
-            Dictionary<Vector3m, Vector3m> pointsHashSet = new Dictionary<Vector3m, Vector3m>();
+            Dictionary<Vector3, Vector3> pointsHashSet = new Dictionary<Vector3, Vector3>();
             int pointCount = 0;
             for (int i = 0; i < points.Count; i++)
             {
                 // we don't wanna have duplicates
-                Vector3m p0;
+                Vector3 p0;
                 if (pointsHashSet.ContainsKey(points[i]))
                 {
                     p0 = pointsHashSet[points[i]];
@@ -95,7 +95,7 @@ namespace Triangulation
 
         public void Triangulate()
         {
-            if (Normal.Equals(Vector3m.Zero()))
+            if (Normal.Equals(Vector3.Zero()))
                 throw new Exception("The input is not a valid polygon");
             if (_holes != null && _holes.Count > 0)
             {
@@ -217,7 +217,7 @@ namespace Triangulation
             var direction = (polygons[holeIndex].Start.Next.Origin - polygons[holeIndex].Start.Origin).Cross(Normal);
             var I = FindPointI(M, polygons, holeIndex, direction);
 
-            Vector3m res;
+            Vector3 res;
             if (polygons[I.PolyIndex].Contains(I.I, out res))
             {
                 var incidentEdges =
@@ -238,7 +238,7 @@ namespace Triangulation
             }
         }
 
-        private ConnectionEdge FindVisiblePoint(Candidate I, List<Polygon> polygons, ConnectionEdge M, Vector3m direction)
+        private ConnectionEdge FindVisiblePoint(Candidate I, List<Polygon> polygons, ConnectionEdge M, Vector3 direction)
         {
             ConnectionEdge P = null;
 
@@ -281,7 +281,7 @@ namespace Triangulation
             return FindMinimumAngle(candidates, m, direction);
         }
 
-        private ConnectionEdge FindMinimumAngle(List<ConnectionEdge> candidates, Vector3m M, Vector3m direction)
+        private ConnectionEdge FindMinimumAngle(List<ConnectionEdge> candidates, Vector3 M, Vector3 direction)
         {
             double angle = -double.MaxValue;
             ConnectionEdge result = null;
@@ -301,7 +301,7 @@ namespace Triangulation
             return result;
         }
 
-        private Candidate FindPointI(ConnectionEdge M, List<Polygon> polygons, int holeIndex, Vector3m direction)
+        private Candidate FindPointI(ConnectionEdge M, List<Polygon> polygons, int holeIndex, Vector3 direction)
         {
             Candidate candidate = new Candidate();
             for (int i = 0; i < polygons.Count; i++)
@@ -311,7 +311,7 @@ namespace Triangulation
                 foreach (var connectionEdge in polygons[i].GetPolygonCirculator())
                 {
                     double rayDistanceSquared;
-                    Vector3m intersectionPoint;
+                    Vector3 intersectionPoint;
 
                     if (RaySegmentIntersection(out intersectionPoint, out rayDistanceSquared, M.Origin, direction, connectionEdge.Origin,
                         connectionEdge.Next.Origin, direction))
@@ -344,8 +344,8 @@ namespace Triangulation
         {
             double maximum = 0;
             ConnectionEdge maxEdge = null;
-            Vector3m v0 = testHole.Start.Origin;
-            Vector3m v1 = testHole.Start.Next.Origin;
+            Vector3 v0 = testHole.Start.Origin;
+            Vector3 v1 = testHole.Start.Next.Origin;
             foreach (var connectionEdge in testHole.GetPolygonCirculator())
             {
                 // we take the first two points as a reference line
@@ -365,7 +365,7 @@ namespace Triangulation
             return maxEdge;
         }
 
-        private bool IsPointInTriangle(Vector3m prevPoint, Vector3m curPoint, Vector3m nextPoint, List<ConnectionEdge> nonConvexPoints)
+        private bool IsPointInTriangle(Vector3 prevPoint, Vector3 curPoint, Vector3 nextPoint, List<ConnectionEdge> nonConvexPoints)
         {
             foreach (var nonConvexPoint in nonConvexPoints)
             {
@@ -388,12 +388,12 @@ namespace Triangulation
             return resultList;
         }
 
-        public bool RaySegmentIntersection(out Vector3m intersection, out double distanceSquared, Vector3m linePoint1, Vector3m lineVec1, Vector3m linePoint3, Vector3m linePoint4, Vector3m direction)
+        public bool RaySegmentIntersection(out Vector3 intersection, out double distanceSquared, Vector3 linePoint1, Vector3 lineVec1, Vector3 linePoint3, Vector3 linePoint4, Vector3 direction)
         {
             var lineVec2 = linePoint4 - linePoint3;
-            Vector3m lineVec3 = linePoint3 - linePoint1;
-            Vector3m crossVec1and2 = lineVec1.Cross(lineVec2);
-            Vector3m crossVec3and2 = lineVec3.Cross(lineVec2);
+            Vector3 lineVec3 = linePoint3 - linePoint1;
+            Vector3 crossVec1and2 = lineVec1.Cross(lineVec2);
+            Vector3 crossVec3and2 = lineVec3.Cross(lineVec2);
 
             var res = Misc.PointLineDistance(linePoint3, linePoint4, linePoint1);
             if (res == 0) // line and ray are collinear
@@ -424,7 +424,7 @@ namespace Triangulation
                         return true;
                 }
             }
-            intersection = Vector3m.Zero();
+            intersection = Vector3.Zero();
             distanceSquared = 0;
             return false;
         }
@@ -433,7 +433,7 @@ namespace Triangulation
     internal class Candidate
     {
         internal double currentDistance = double.MaxValue;
-        internal Vector3m I;
+        internal Vector3 I;
         internal ConnectionEdge Origin;
         internal int PolyIndex;
     }
@@ -461,12 +461,12 @@ namespace Triangulation
             }
         }
 
-        internal Vector3m Origin { get; private set; }
+        internal Vector3 Origin { get; private set; }
         internal ConnectionEdge Prev;
         internal ConnectionEdge Next;
         internal Polygon Polygon { get; set; }
 
-        public ConnectionEdge(Vector3m p0, Polygon parentPolygon)
+        public ConnectionEdge(Vector3 p0, Polygon parentPolygon)
         {
             Origin = p0;
             Polygon = parentPolygon;
@@ -516,7 +516,7 @@ namespace Triangulation
                 Start = cur.Prev;
         }
 
-        public bool Contains(Vector3m vector2M, out Vector3m res)
+        public bool Contains(Vector3 vector2M, out Vector3 res)
         {
             foreach (var connectionEdge in GetPolygonCirculator())
             {

@@ -9,16 +9,16 @@ namespace Intersection
 {
     public class Line
     {
-        public Vector3m O { private set; get; }
+        public Vector3 O { private set; get; }
 
-        public Vector3m D { private set; get; }
+        public Vector3 D { private set; get; }
 
-        public Vector3m Eval(double t)
+        public Vector3 Eval(double t)
         {
             return O + D * t;
         }
 
-        public Line(Vector3m o, Vector3m d)
+        public Line(Vector3 o, Vector3 d)
         {
             O = o;
             D = D;
@@ -26,7 +26,7 @@ namespace Intersection
 
         public Line(Line other): this(other.O, other.D) { }
 
-        public double Project(Vector3m v)
+        public double Project(Vector3 v)
         {
             double max = Helper.Max(Math.Abs(D.X), Math.Abs(D.Y), Math.Abs(D.Z));
             if (max == Math.Abs(D.X))

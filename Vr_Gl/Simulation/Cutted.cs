@@ -27,17 +27,17 @@ namespace Vr_Gl.Simulation
             this.Cutter = cutter;
         }
 
-        public Cutted(List<Triangle> tris, Cutter cutter, Vector3m initialPos) : this(tris, cutter)
+        public Cutted(List<Triangle> tris, Cutter cutter, Vector3 initialPos) : this(tris, cutter)
         {
             this.Move(initialPos);
         }
 
-        public Cutted(string fileName, Cutter cutter, Vector3m initialPos) : this(fileName, cutter)
+        public Cutted(string fileName, Cutter cutter, Vector3 initialPos) : this(fileName, cutter)
         {
             this.Move(initialPos);
         }
 
-        public void Move(Vector3m trans)
+        public void Move(Vector3 trans)
         {
             for (int i = 0; i < Triangles.Count; i++)
             {
@@ -57,9 +57,10 @@ namespace Vr_Gl.Simulation
                     tris.Add(tri);
                     continue;
                 }
+                Console.WriteLine(i);
                 var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
-                List<List<Vector3m>> holes = new List<List<Vector3m>>();
-                List<Vector3m> temp = new List<Vector3m>();
+                List<List<Vector3>> holes = new List<List<Vector3>>();
+                List<Vector3> temp = new List<Vector3>();
                 for (int j = 0; j < result.Count; j++)
                 {
                     if (result[j].Item1)
@@ -72,7 +73,7 @@ namespace Vr_Gl.Simulation
                 if (temp.Count >= 3)
                 {
                     holes.Add(temp);
-                    List<Vector3m> points = tri.Points();
+                    List<Vector3> points = tri.Points();
                     EarClipping clipper = new EarClipping();
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
@@ -91,7 +92,7 @@ namespace Vr_Gl.Simulation
             this.Triangles = tris;
         }
 
-        public void Draw(Vector3m color)
+        public void Draw(Vector3 color)
         {
             for(int i = 0; i < Triangles.Count; ++i)
             {

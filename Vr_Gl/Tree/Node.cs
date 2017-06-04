@@ -54,7 +54,7 @@ namespace Tree
             }
         }
 
-        public void Move(Vector3m trans)
+        public void Move(Vector3 trans)
         {
             this.Aabb.Move(trans);
             if (_left != null)

@@ -75,7 +75,7 @@
     <Compile Include="Triangulation\DynamicProperties.cs" />
     <Compile Include="Triangulation\EarClipping.cs" />
     <Compile Include="Triangulation\Misc.cs" />
-    <Compile Include="Triangulation\Vector3m.cs" />
+    <Compile Include="Triangulation\Vector3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

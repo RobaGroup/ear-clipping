@@ -9,12 +9,12 @@ namespace Intersection
 {
      public class Segment
     {
-        public Vector3m V1 { private set; get; }
-        public Vector3m V2 { private set; get; }
+        public Vector3 V1 { private set; get; }
+        public Vector3 V2 { private set; get; }
 
         public double Length { get { return (V2 - V1).Length(); } }
 
-        public Segment(Vector3m v1, Vector3m v2)
+        public Segment(Vector3 v1, Vector3 v2)
         {
             V1 = v1;
             V2 = v2;

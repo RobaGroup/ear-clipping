@@ -6,34 +6,34 @@ using System.Text;
 
 namespace Triangulation
 {
-    public class Vector3m : ICloneable
+    public class Vector3 : ICloneable
     {
         internal DynamicProperties DynamicProperties = new DynamicProperties();
 
-        public Vector3m(double x, double y, double z)
+        public Vector3(double x, double y, double z)
         {
             X = x;
             Y = y;
             Z = z;
         }
 
-        public Vector3m(Vector3m v)
+        public Vector3(Vector3 v)
         {
             X = v.X;
             Y = v.Y;
             Z = v.Z;
         }
 
-        public static Vector3m Zero()
+        public static Vector3 Zero()
         {
-            return new Vector3m(0, 0, 0);
+            return new Vector3(0, 0, 0);
         }
 
         public double X { get; set; }
 
-        public Vector3m Absolute()
+        public Vector3 Absolute()
         {
-             return new Vector3m(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
+             return new Vector3(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
         }
 
         public double Y { get; set; }
@@ -41,7 +41,7 @@ namespace Triangulation
 
         public object Clone()
         {
-            return new Vector3m(X, Y, Z);
+            return new Vector3(X, Y, Z);
         }
 
         public void ImplizitNegated()
@@ -49,37 +49,37 @@ namespace Triangulation
             X = -X; Y = -Y; Z = -Z;
         }
 
-        public Vector3m Negated()
+        public Vector3 Negated()
         {
-            return new Vector3m(-X, -Y, -Z);
+            return new Vector3(-X, -Y, -Z);
         }
 
-        public Vector3m Plus(Vector3m a)
+        public Vector3 Plus(Vector3 a)
         {
-            return new Vector3m(this.X + a.X, this.Y + a.Y, this.Z + a.Z);
+            return new Vector3(this.X + a.X, this.Y + a.Y, this.Z + a.Z);
         }
 
-        public Vector3m Minus(Vector3m a)
+        public Vector3 Minus(Vector3 a)
         {
-            return new Vector3m(this.X - a.X, this.Y - a.Y, this.Z - a.Z);
+            return new Vector3(this.X - a.X, this.Y - a.Y, this.Z - a.Z);
         }
 
-        public Vector3m Times(double a)
+        public Vector3 Times(double a)
         {
-            return new Vector3m(this.X * a, this.Y * a, this.Z * a);
+            return new Vector3(this.X * a, this.Y * a, this.Z * a);
         }
 
-        public Vector3m DividedBy(double a)
+        public Vector3 DividedBy(double a)
         {
-            return new Vector3m(this.X / a, this.Y / a, this.Z / a);
+            return new Vector3(this.X / a, this.Y / a, this.Z / a);
         }
 
-        public double Dot(Vector3m a)
+        public double Dot(Vector3 a)
         {
             return this.X * a.X + this.Y * a.Y + this.Z * a.Z;
         }
 
-        public Vector3m Lerp(Vector3m a, double t)
+        public Vector3 Lerp(Vector3 a, double t)
         {
             return this.Plus(a.Minus(this).Times(t));
         }
@@ -94,10 +94,10 @@ namespace Triangulation
             return Dot(this);
         }
 
-        public Vector3m ShortenByLargestComponent()
+        public Vector3 ShortenByLargestComponent()
         {
             if (this.LengthSquared() == 0)
-                return new Vector3m(0, 0, 0);
+                return new Vector3(0, 0, 0);
             var absNormal = Absolute();
             double largestValue = 0;
             if (absNormal.X >= absNormal.Y && absNormal.X >= absNormal.Z)
@@ -112,9 +112,9 @@ namespace Triangulation
             return this / largestValue;
         }
 
-        public Vector3m Cross(Vector3m a)
+        public Vector3 Cross(Vector3 a)
         {
-            return new Vector3m(
+            return new Vector3(
             this.Y * a.Z - this.Z * a.Y,
             this.Z * a.X - this.X * a.Z,
             this.X * a.Y - this.Y * a.X
@@ -128,7 +128,7 @@ namespace Triangulation
 
         public override bool Equals(object obj)
         {
-            var other = obj as Vector3m;
+            var other = obj as Vector3;
 
             if (other == null)
             {
@@ -143,22 +143,22 @@ namespace Triangulation
             return this.X.GetHashCode() ^ this.Y.GetHashCode() ^ this.Z.GetHashCode();
         }
 
-        public static Vector3m operator +(Vector3m a, Vector3m b)
+        public static Vector3 operator +(Vector3 a, Vector3 b)
         {
             return a.Plus(b);
         }
 
-        public static Vector3m operator -(Vector3m a, Vector3m b)
+        public static Vector3 operator -(Vector3 a, Vector3 b)
         {
             return a.Minus(b);
         }
 
-        public static Vector3m operator *(Vector3m a, double d)
+        public static Vector3 operator *(Vector3 a, double d)
         {
-            return new Vector3m(a.X * d, a.Y * d, a.Z * d);
+            return new Vector3(a.X * d, a.Y * d, a.Z * d);
         }
 
-        public static Vector3m operator /(Vector3m a, double d)
+        public static Vector3 operator /(Vector3 a, double d)
         {
             return a.DividedBy(d);
         }
@@ -168,22 +168,22 @@ namespace Triangulation
             return "Vector:" + " " + X + " " + Y + " " + Z + " ";
         }
 
-        public static Vector3m PlaneNormal(Vector3m v0, Vector3m v1, Vector3m v2)
+        public static Vector3 PlaneNormal(Vector3 v0, Vector3 v1, Vector3 v2)
         {
-            Vector3m a = v1 - v0;
-            Vector3m b = v2 - v0;
+            Vector3 a = v1 - v0;
+            Vector3 b = v2 - v0;
             return a.Cross(b);
         }
 
-        public bool SameDirection(Vector3m he)
+        public bool SameDirection(Vector3 he)
         {
             var res = this.Cross(he);
             return res.X == 0 && res.Y == 0 && res.Z == 0;
         }
 
-        public Vector3m Normalized()
+        public Vector3 Normalized()
         {
-            return new Vector3m(this.X, this.Y, this.Z) / this.Length();
+            return new Vector3(this.X, this.Y, this.Z) / this.Length();
         }
 
         public double[] Data()

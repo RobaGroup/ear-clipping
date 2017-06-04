@@ -25,7 +25,7 @@ namespace Vr_Gl.Simulation
             Tree = new AabbTree(tris);
         }
 
-        public Cutter(string fileName, Vector3m initialPos) : this(fileName)
+        public Cutter(string fileName, Vector3 initialPos) : this(fileName)
         {
             this.Move(initialPos);
         }
@@ -35,12 +35,12 @@ namespace Vr_Gl.Simulation
             return Tree.IntersectTriangles(tris);
         }
 
-        public void Move(Vector3m trans)
+        public void Move(Vector3 trans)
         {
             Tree.Move(trans);
         }
 
-        public void Draw(Vector3m color)
+        public void Draw(Vector3 color)
         {
             for(int i = 0; i < Tree.Triangles.Count; ++i)
             {
