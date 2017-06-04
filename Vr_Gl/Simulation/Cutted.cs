@@ -21,6 +21,12 @@ namespace Vr_Gl.Simulation
             this.Cutter = cutter;
         }
 
+        public Cutted(List<Triangle> tris, Cutter cutter)
+        {
+            this.Triangles = tris;
+            this.Cutter = cutter;
+        }
+
         public Cutted(string fileName, Cutter cutter, Vector3m initialPos) : this(fileName, cutter)
         {
             this.Move(initialPos);
@@ -46,7 +52,6 @@ namespace Vr_Gl.Simulation
                     tris.Add(tri);
                     continue;
                 }
-                Console.WriteLine(i);
                 var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
                 List<List<Vector3m>> holes = new List<List<Vector3m>>();
                 List<Vector3m> temp = new List<Vector3m>();
@@ -54,11 +59,12 @@ namespace Vr_Gl.Simulation
                 {
                     if (result[j].Item1)
                     {
+                        Console.WriteLine("In");
                         temp.Add(result[j].Item2.V1);
                         temp.Add(result[j].Item2.V2);
                     }
                 }
-                if (temp.Count >= 2)
+                if (temp.Count >= 3)
                 {
                     holes.Add(temp);
                     List<Vector3m> points = tri.Points();
@@ -66,6 +72,7 @@ namespace Vr_Gl.Simulation
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
                     var t = clipper.Result;
+                    Console.WriteLine(t.Count);
                     for (int j = 0; j < t.Count - 2; j += 3)
                     {
                         tris.Add(new Triangle(t[j], t[j + 1], t[j + 2]));

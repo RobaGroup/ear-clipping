@@ -20,6 +20,11 @@ namespace Vr_Gl.Simulation
             Tree = new AabbTree(new Loader(1000).Load(fileName));
         }
 
+        public Cutter(List<Triangle> tris)
+        {
+            Tree = new AabbTree(tris);
+        }
+
         public Cutter(string fileName, Vector3m initialPos) : this(fileName)
         {
             this.Move(initialPos);
