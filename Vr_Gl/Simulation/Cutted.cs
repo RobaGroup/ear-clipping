@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Triangulation;
 using OpenTK.Graphics.OpenGL;
 using Vr_Gl.Model;
+using Vr_Gl.Graphics;
 
 namespace Vr_Gl.Simulation
 {
@@ -14,6 +15,8 @@ namespace Vr_Gl.Simulation
     {
         List<Triangle> Triangles { get; set; }
         public Cutter Cutter { get; set; }
+
+        public int Texture;
 
         public Cutted(string fileName, Cutter cutter)
         {
@@ -27,14 +30,16 @@ namespace Vr_Gl.Simulation
             this.Cutter = cutter;
         }
 
-        public Cutted(List<Triangle> tris, Cutter cutter, Vector3 initialPos) : this(tris, cutter)
+        public Cutted(List<Triangle> tris, Cutter cutter, Vector3 initialPos, string texturePath = "D:/cutted.jpg") : this(tris, cutter)
         {
             this.Move(initialPos);
+            this.Texture = AssetsLoader.LoadTexture(texturePath);
         }
 
-        public Cutted(string fileName, Cutter cutter, Vector3 initialPos) : this(fileName, cutter)
+        public Cutted(string fileName, Cutter cutter, Vector3 initialPos, string texturePath = "D:/cutted.jpg") : this(fileName, cutter)
         {
             this.Move(initialPos);
+            this.Texture = AssetsLoader.LoadTexture(texturePath);
         }
 
         public void Move(Vector3 trans)
@@ -93,13 +98,30 @@ namespace Vr_Gl.Simulation
 
         public void Draw(Vector3 color)
         {
-            for(int i = 0; i < Triangles.Count; ++i)
+            for (int i = 0; i < Triangles.Count; ++i)
             {
                 var tri = Triangles[i];
                 GL.Color3(color.X, color.Y, color.Z);
                 GL.Begin(BeginMode.Triangles);
                 GL.Vertex3(tri.V1.Data());
                 GL.Vertex3(tri.V2.Data());
+                GL.Vertex3(tri.V3.Data());
+                GL.End();
+            }
+        }
+
+        public void Draw()
+        {
+            for (int i = 0; i < Triangles.Count; ++i)
+            {
+                var tri = Triangles[i];
+                GL.BindTexture(TextureTarget.Texture2D, Texture);
+                GL.Begin(BeginMode.Triangles);
+                GL.TexCoord2(0, 0);
+                GL.Vertex3(tri.V1.Data());
+                GL.TexCoord2(1, 0);
+                GL.Vertex3(tri.V2.Data());
+                GL.TexCoord2(0.5, 0.5);
                 GL.Vertex3(tri.V3.Data());
                 GL.End();
             }
