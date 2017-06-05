@@ -77,8 +77,11 @@ namespace Vr_Gl.Simulation
                     var temp = t.ToList();
                     List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3}.ToList();
                     var orig1 = (tri.V1 + tri.V2 + tri.V3) / 3;
-                    //var orig2 = temp.Aggregate((x, y) => (x + y)) / temp.Count;
                     var orig2 = new Vector3(0, 0, 0);
+                    for (int k = 0; k < temp.Count - 1; k += 2)
+                    {
+                        orig2 = (orig2 + (temp[k] + temp[k + 1]) / 2) / 2;
+                    }
                     EarClipping clipper = new EarClipping();
                     points.Sort(new CounterClockwiseComp(orig1));
                     temp.Sort(new ClockwiseComp(orig2));
@@ -100,7 +103,6 @@ namespace Vr_Gl.Simulation
                     tris.Add(tri);
                 }
             }
-            Console.WriteLine(tris.Count);
             this.Triangles = tris;
         }
 
