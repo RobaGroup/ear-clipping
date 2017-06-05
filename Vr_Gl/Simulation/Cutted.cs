@@ -86,8 +86,8 @@ namespace Vr_Gl.Simulation
                     }
                     var temp = t.ToList();
                     List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3}.ToList();
-                    var orig1 = ((tri.V1 + tri.V2 / 2) + tri.V3) / 2;
-                    var orig2 = new Vector3(0, 0, 0);
+                    //var orig1 = ((tri.V1 + tri.V2 / 2) + tri.V3) / 2;
+                    //var orig2 = new Vector3(0, 0, 0);
                     //for (int k = 0; k < temp.Count - 1; k += 2)
                     //{
                     //    orig2 = (orig2 + (temp[k] + temp[k + 1]) / 2) / 2;
@@ -113,7 +113,6 @@ namespace Vr_Gl.Simulation
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
                     var te = clipper.Result;
-                    Console.WriteLine(te.Count);
                     for (int j = 0; j < te.Count - 2; j += 3)
                     {
                         tris.Add(new Triangle(te[j], te[j + 1], te[j + 2]));
