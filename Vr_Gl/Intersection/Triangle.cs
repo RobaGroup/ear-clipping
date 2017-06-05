@@ -45,7 +45,6 @@ namespace Intersection
             //4. Reject as trivial if all points of triangle 1 are on same side. (or all of them are on the other plane)
             //co-planar or no intersection
             if (!_can_be_isect(tr2, tr1)) return new Tuple<bool, Segment>(false, null);
-
             //5. Compute intersection line and project onto largest axis.
             //6. Compute the intervals for each triangle.
             Line isect_line;
@@ -64,8 +63,8 @@ namespace Intersection
             t2_1 = tup2.Item3; t2_2 = tup2.Item4;
             //one point intersection
             if (!b1 || !b2) return new Tuple<bool, Segment>(false, null);
-
             //7. Intersect the intervals.
+
             Helper.Sort(ref t1_1, ref t1_2);
             Helper.Sort(ref t2_1, ref t2_2);
             Segment s;

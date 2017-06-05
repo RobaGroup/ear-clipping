@@ -24,7 +24,7 @@ namespace Vr_Gl.Graphics
         public MainWindow(string cutterFileName, string cuttedFileName)
         {
             Cutter = new Cutter(cutterFileName);
-            Cutted = new Cutted(cuttedFileName, Cutter, new Triangulation.Vector3(-5, 0, -2));
+            Cutted = new Cutted(cuttedFileName, Cutter, new Triangulation.Vector3(-2, 0, -1));
         }
 
         public MainWindow(List<Triangle> cutterTris, List<Triangle> cuttedTris)

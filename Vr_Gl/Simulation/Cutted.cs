@@ -63,11 +63,10 @@ namespace Vr_Gl.Simulation
                     continue;
                 }
                 Console.WriteLine(i);
-                var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
+                //var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
+                var result = IntersectionDetector.Intersect(tri, intersectedTris[i]);
                 List<List<Vector3>> holes = new List<List<Vector3>>();
                 List<Vector3> temp = new List<Vector3>();
-                Console.WriteLine(tri.ToString());
-                Console.WriteLine(intersectedTris[0][0].ToString());
                 for (int j = 0; j < result.Count; j++)
                 {
                      Console.WriteLine("In");
