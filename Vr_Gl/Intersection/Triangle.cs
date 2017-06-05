@@ -25,6 +25,13 @@ namespace Intersection
             this.V3 = v3;
         }
 
+        public Triangle(Triangle tri)
+        {
+            this.V1 = new Vector3(tri.V1);
+            this.V2 = new Vector3(tri.V2);
+            this.V3 = new Vector3(tri.V3);
+        }
+
         public void ComputePlane()
         {
             Vector3 n = (V2 - V1).Cross(V3 - V1);

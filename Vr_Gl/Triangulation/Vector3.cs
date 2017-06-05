@@ -193,7 +193,14 @@ namespace Triangulation
 
         public bool Equals(Vector3 other)
         {
+            if (other == null)
+                return false;
             return double.Equals(this.X, other.X) && Double.Equals(this.Y, other.Y) && Double.Equals(this.Z, other.Z);
+        }
+
+        public double Angle(Vector3 other)
+        {
+            return Math.Acos((this.Dot(other)) / (this.Length() * other.Length()));
         }
     }
 }

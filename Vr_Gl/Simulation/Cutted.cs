@@ -71,26 +71,28 @@ namespace Vr_Gl.Simulation
                     {
                         t.Add(result[j].V1);
                         t.Add(result[j].V2);
-                        if(result[j].V1 == null || result[j].V2 == null)
-                            Console.WriteLine("What");
                     }
                     var temp = t.ToList();
                     List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3}.ToList();
-                    var orig1 = ((tri.V1 + tri.V2 / 2)+ tri.V3) / 2;
+                    var orig1 = ((tri.V1 + tri.V2 / 2) + tri.V3) / 2;
                     var orig2 = new Vector3(0, 0, 0);
-                    for (int k = 0; k < temp.Count - 1; k += 2)
-                    {
-                        orig2 = (orig2 + (temp[k] + temp[k + 1]) / 2) / 2;
-                    }
-                    EarClipping clipper = new EarClipping();
-                    points.Sort(new CounterClockwiseComp(orig1));
-                    temp.Sort(new ClockwiseComp(orig2));
+                    //for (int k = 0; k < temp.Count - 1; k += 2)
+                    //{
+                    //    orig2 = (orig2 + (temp[k] + temp[k + 1]) / 2) / 2;
+                    //}
+                    //orig2 = temp.Aggregate((x, y) => x + y) / temp.Count;
+                    points = SortVerticies((points[0] - points[1]).Cross(points[0] - points[2]), points);
+                    points.Reverse();
+                    //points.Sort(new CounterClockwiseComp(orig1));
+                    //temp.Sort(new ClockwiseComp(orig2));
+                    temp = SortVerticies((temp[0] - temp[1]).Cross(temp[0] - temp[2]), temp);
                     foreach (var item in temp)
                     {
                         Console.WriteLine(item.ToString());
                     }
                     Console.WriteLine();
                     holes.Add(temp);
+                    EarClipping clipper = new EarClipping();
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
                     var te = clipper.Result;
@@ -101,7 +103,8 @@ namespace Vr_Gl.Simulation
                 }
                 else
                 {
-                    tris.Add(tri);
+                    //tris.Add(tri);
+                    tris.Add(new Triangle(tri));
                 }
             }
             this.Triangles = tris;
@@ -188,6 +191,36 @@ namespace Vr_Gl.Simulation
                 var angle2 = Math.Abs(Math.Acos((Origin.Dot(y)) / (Origin.Length() * y.Length())));
                 return angle1 > angle2 ? -1 : angle2 > angle1 ? 1 : 0;
             }
+        }
+
+        public static List<Vector3> SortVerticies(Vector3 normal, List<Vector3> nodes)
+        {
+
+            Vector3 first = nodes[0];
+
+            //Sort by distance from random point to get 2 adjacent points.
+            List<Vector3> temp = nodes.OrderBy(n => (n - first).Length()).ToList();
+
+            //Create a vector from the 2 adjacent points,
+            //this will be used to sort all points, except the first, by the angle to this vector.
+            //Since the shape is convex, angle will not exceed 180 degrees, resulting in a proper sort.
+            Vector3 refrenceVec = (temp[1] - first);
+
+            //Sort by angle to reference, but we are still missing the first one.
+            List<Vector3> results = temp.Skip(1).OrderBy(n => refrenceVec.Angle(n - first)).ToList();
+
+            //insert the first one, at index 0.
+            results.Insert(0, nodes[0]);
+
+            //Now that it is sorted, we check if we got the direction right, if we didn't we reverse the list.
+            //We compare the given normal and the cross product of the first 3 point.
+            //If the magnitude of the sum of the normal and cross product is less than Sqrt(2) then then there is more than 90 between them.
+            if (((results[1] - results[0]).Cross(results[2]- results[0]).Normalized() + normal.Normalized()).Length() < 1.414f)
+            {
+                results.Reverse();
+            }
+
+            return results;
         }
     }
 }
