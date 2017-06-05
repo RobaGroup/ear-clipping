@@ -76,16 +76,7 @@ namespace Vr_Gl.Simulation
                         }
                         else
                         {
-                            if (result[j].V1.X < result[j].V2.X)
-                            {
-                                t.Add(result[j].V1 + 0.01f);
-                                t.Add(result[j].V2 - 0.01f);
-                            }
-                            else
-                            {
-                                t.Add(result[j].V1 - 0.01f);
-                                t.Add(result[j].V2 + 0.01f);
-                            }
+                            
                         }
                     }
                     if (t.Count <= 3)

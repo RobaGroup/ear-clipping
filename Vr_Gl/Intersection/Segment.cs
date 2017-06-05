@@ -19,5 +19,10 @@ namespace Intersection
             V1 = v1;
             V2 = v2;
         }
+
+        public bool IsParallel(Segment other)
+        {
+            return Math.Abs(Math.Cos((this.V1 - this.V2).Dot(other.V1 - other.V2) / ((this.V1 - this.V2).Length() * (other.V1 - other.V2).Length()))) <= 0.001;
+        }
     }
 }
