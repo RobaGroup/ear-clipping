@@ -62,21 +62,20 @@ namespace Vr_Gl.Simulation
                     tris.Add(tri);
                     continue;
                 }
-                var result = IntersectionDetector.Intersect(tri, intersectedTris[i]);
-                if (result.Count >= 2)
+                var result = IntersectionDetector.IntersectWithBool(tri, intersectedTris[i]);
+                if (result.Count(x => x.Item1) >= 2)
                 {
                     List<List<Vector3>> holes = new List<List<Vector3>>();
                     ISet<Vector3> t = new HashSet<Vector3>();
                     for (int j = 0; j < result.Count; j++)
                     {
-                        if (tri.Inside(result[j].V1) && tri.Inside(result[j].V2))
+                        if (result[j].Item1)
                         {
-                            t.Add(result[j].V1);
-                            t.Add(result[j].V2);
-                        }
-                        else
-                        {
-                            
+                            if (tri.Inside(result[j].Item2.V1) && tri.Inside(result[j].Item2.V2))
+                            {
+                                t.Add(result[j].Item2.V1);
+                                t.Add(result[j].Item2.V2);
+                            }
                         }
                     }
                     if (t.Count <= 3)

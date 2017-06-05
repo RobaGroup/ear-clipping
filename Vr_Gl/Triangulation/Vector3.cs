@@ -140,7 +140,7 @@ namespace Triangulation
                 return false;
             }
 
-            return _doubleEquals(X, other.X) && _doubleEquals(Y, other.Y) && _doubleEquals(Z, other.Z);
+            return Double.Equals(X, other.X) && Double.Equals(Y, other.Y) && Double.Equals(Z, other.Z);
         }
 
         public override int GetHashCode()
@@ -193,7 +193,7 @@ namespace Triangulation
         public bool SameDirection(Vector3 he)
         {
             var res = this.Cross(he);
-            return _doubleEquals(res.X, 0) && _doubleEquals(res.Y, 0) && _doubleEquals(res.Z, 0);
+            return Double.Equals(res.X, 0) && Double.Equals(res.Y, 0) && Double.Equals(res.Z, 0);
         }
 
         public Vector3 Normalized()
@@ -210,18 +210,12 @@ namespace Triangulation
         {
             if (other == null)
                 return false;
-            return _doubleEquals(this.X, other.X) && _doubleEquals(this.Y, other.Y) && _doubleEquals(this.Z, other.Z);
+            return Double.Equals(this.X, other.X) && Double.Equals(this.Y, other.Y) && Double.Equals(this.Z, other.Z);
         }
 
         public double Angle(Vector3 other)
         {
             return Math.Acos((this.Dot(other)) / (this.Length() * other.Length()));
-        }
-
-        private static bool _doubleEquals(double x, double y)
-        {
-            var eps = 0.01;
-            return Math.Abs(x - y) <= eps;
         }
     }
 }

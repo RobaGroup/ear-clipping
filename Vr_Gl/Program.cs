@@ -38,39 +38,41 @@ namespace Vr_Gl
             //    window.Run(30);
             //}
             //List<Triangle> cutterTris = new Loader(10).Load(@"D:/pyramid.3ds");
-            List<Triangle> cutterTris = new Triangle[]
+            EarClipping clip = new EarClipping();
+            List<Vector3> vertices = new Vector3[] { new Vector3(0, 0, 0) , new Vector3(1, 0, 0) , new Vector3(0.5, 0.5, 0) }.ToList();
+            List<Vector3> temp = new Vector3[] {new Vector3(0, 0.2, 0), new Vector3(0.5, 2, 0), new Vector3(1, 0.2, 0)}.ToList();
+            List<List<Vector3>> holes = new List<List<Vector3>>();
+            holes.Add(temp);
+            clip.SetPoints(vertices, holes);
+            clip.Triangulate();
+            var res = clip.Result;
+            for (int i = 0; i < res.Count - 2; i += 3)
             {
-                new Triangle(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0.3, 0.3, -0.5)),
-                new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
-                new Triangle(new Vector3(1, 0, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
-                new Triangle(new Vector3(0, 0.6, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
-            }.ToList();
-            List<Triangle> cuttedTris = new Triangle[] 
-            {
-                new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 3, -1)),
-                new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0, -2), new Vector3(1, 3, -1)),
-                new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
-                new Triangle(new Vector3(0, 0, -2), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
-                new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(0, 0, -2)),
-                new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(0, 0, -2)),
-            }.ToList();
-            using (MainWindow window = new MainWindow(cutterTris, cuttedTris))
-            {
-                window.Run(30);
+                Console.WriteLine(res[i].ToString());
+                Console.WriteLine(res[i + 1].ToString());
+                Console.WriteLine(res[i + 2].ToString());
             }
-            //List<Vector3> vertices = new Vector3[]
+            Console.ReadKey();
+            //List<Triangle> cutterTris = new Triangle[]
             //{
-            //    new Vector3(0, 0, 0),
-            //    new Vector3(1, 0, 0),
-            //    new Vector3(0, 1, 0),
-            //    new Vector3(1, 1, 0)
+            //    new Triangle(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0.3, 0.3, -0.5)),
+            //    new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
+            //    new Triangle(new Vector3(1, 0, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
+            //    new Triangle(new Vector3(0, 0.6, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
             //}.ToList();
-            //vertices = Cutted.SortVerticies(vertices);
-            //foreach (var item in vertices)
+            //List<Triangle> cuttedTris = new Triangle[]
             //{
-            //    Console.WriteLine(item.ToString());
+            //    new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 3, 0))
+            //    //new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0, -2), new Vector3(1, 3, -1)),
+            //    //new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
+            //    //new Triangle(new Vector3(0, 0, -2), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
+            //    //new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(0, 0, -2)),
+            //    //new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(0, 0, -2)),
+            //}.ToList();
+            //using (MainWindow window = new MainWindow(cutterTris, cuttedTris))
+            //{
+            //    window.Run(30);
             //}
-            //Console.ReadKey();
         }
     }
 }
