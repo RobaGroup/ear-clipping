@@ -83,9 +83,15 @@ namespace Vr_Gl.Simulation
                     //orig2 = temp.Aggregate((x, y) => x + y) / temp.Count;
                     points = SortVerticies((points[0] - points[1]).Cross(points[0] - points[2]), points);
                     points.Reverse();
+                    Console.WriteLine("Before:");
+                    foreach (var item in temp)
+                    {
+                        Console.WriteLine(item.ToString());
+                    }
                     //points.Sort(new CounterClockwiseComp(orig1));
                     //temp.Sort(new ClockwiseComp(orig2));
-                    temp = SortVerticies((temp[0] - temp[1]).Cross(temp[0] - temp[2]), temp);
+                    temp = SortVerticies((temp[1] - temp[0]).Cross(temp[2] - temp[0]), temp);
+                    Console.WriteLine("After:");
                     foreach (var item in temp)
                     {
                         Console.WriteLine(item.ToString());

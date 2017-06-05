@@ -24,6 +24,11 @@ namespace Triangulation
             Z = v.Z;
         }
 
+        public Vector3 Inverse()
+        {
+            return this * -1;
+        }
+
         public static Vector3 Zero()
         {
             return new Vector3(0, 0, 0);
