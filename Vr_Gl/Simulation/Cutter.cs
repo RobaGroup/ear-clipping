@@ -16,15 +16,29 @@ namespace Vr_Gl.Simulation
     {
         public AabbTree Tree { get; set; }
         public int Texture { get; set; }
+        private List<Vector3> _normals;
 
         public Cutter(string fileName)
         {
-            Tree = new AabbTree(new Loader(1000).Load(fileName));
+            _normals = new List<Vector3>();
+            var tris = new Loader(1000).Load(fileName);
+            foreach (var tri in tris)
+            {
+                var normal = (tri.V1 - tri.V2).Cross(tri.V1 - tri.V3).Normalized();
+                _normals.Add(normal);
+            }
+            Tree = new AabbTree(tris);
         }
 
         public Cutter(List<Triangle> tris, string texturePath = "D:/cutter.jpg")
         {
+            _normals = new List<Vector3>();
             Tree = new AabbTree(tris);
+            foreach (var tri in tris)
+            {
+                var normal = (tri.V1 - tri.V2).Cross(tri.V1 - tri.V3).Normalized();
+                _normals.Add(normal);
+            }
             this.Texture = AssetsLoader.LoadTexture(texturePath);
         }
 
@@ -51,6 +65,7 @@ namespace Vr_Gl.Simulation
                 var tri = Tree.Triangles[i];
                 GL.BindTexture(TextureTarget.Texture2D, Texture);
                 GL.Begin(BeginMode.Triangles);
+                GL.Normal3(_normals[i].Data());
                 GL.TexCoord2(0, 0);
                 GL.Vertex3(tri.V1.Data());
                 GL.TexCoord2(1, 0);

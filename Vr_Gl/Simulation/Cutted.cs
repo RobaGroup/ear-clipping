@@ -115,8 +115,10 @@ namespace Vr_Gl.Simulation
             for (int i = 0; i < Triangles.Count; ++i)
             {
                 var tri = Triangles[i];
+                var normal = (tri.V1 - tri.V2).Cross(tri.V1 - tri.V3).Normalized();
                 GL.BindTexture(TextureTarget.Texture2D, Texture);
                 GL.Begin(BeginMode.Triangles);
+                GL.Normal3(normal.Data());
                 GL.TexCoord2(0, 0);
                 GL.Vertex3(tri.V1.Data());
                 GL.TexCoord2(1, 0);

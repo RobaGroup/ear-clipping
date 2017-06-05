@@ -56,7 +56,8 @@ namespace Vr_Gl.Graphics
             }
             //Cutter.Draw(new Triangulation.Vector3(1, 1, 1));
             Cutter.Draw();
-            Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
+            //Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
+            Cutted.Draw();
             SwapBuffers();
             clicked = false;
             move = new Triangulation.Vector3(0, 0, 0);
