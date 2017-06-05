@@ -69,8 +69,29 @@ namespace Vr_Gl.Simulation
                     ISet<Vector3> t = new HashSet<Vector3>();
                     for (int j = 0; j < result.Count; j++)
                     {
-                        t.Add(result[j].V1);
-                        t.Add(result[j].V2);
+                        if (tri.Inside(result[j].V1) && tri.Inside(result[j].V2))
+                        {
+                            t.Add(result[j].V1);
+                            t.Add(result[j].V2);
+                        }
+                        else
+                        {
+                            if (result[j].V1.X < result[j].V2.X)
+                            {
+                                t.Add(result[j].V1 + 0.01f);
+                                t.Add(result[j].V2 - 0.01f);
+                            }
+                            else
+                            {
+                                t.Add(result[j].V1 - 0.01f);
+                                t.Add(result[j].V2 + 0.01f);
+                            }
+                        }
+                    }
+                    if (t.Count <= 3)
+                    {
+                        tris.Add(new Triangle(tri));
+                        continue;
                     }
                     var temp = t.ToList();
                     List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3}.ToList();
@@ -83,11 +104,6 @@ namespace Vr_Gl.Simulation
                     //orig2 = temp.Aggregate((x, y) => x + y) / temp.Count;
                     points = SortVerticies(points);
                     points.Reverse();
-                    Console.WriteLine("Before:");
-                    foreach (var item in temp)
-                    {
-                        Console.WriteLine(item.ToString());
-                    }
                     //points.Sort(new CounterClockwiseComp(orig1));
                     //temp.Sort(new ClockwiseComp(orig2));
                     temp = SortVerticies(temp);
@@ -96,12 +112,17 @@ namespace Vr_Gl.Simulation
                     {
                         Console.WriteLine(item.ToString());
                     }
+                    Console.WriteLine(points[0].ToString());
+                    Console.WriteLine(points[1].ToString());
+                    Console.WriteLine(points[2].ToString());
+                    Console.WriteLine();
                     Console.WriteLine();
                     holes.Add(temp);
                     EarClipping clipper = new EarClipping();
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
                     var te = clipper.Result;
+                    Console.WriteLine(te.Count);
                     for (int j = 0; j < te.Count - 2; j += 3)
                     {
                         tris.Add(new Triangle(te[j], te[j + 1], te[j + 2]));
@@ -116,6 +137,11 @@ namespace Vr_Gl.Simulation
             this.Triangles = tris;
             Cutter.Reset();
             this.Reset();
+        }
+
+        private static g3.Vector3d _fromVector(Vector3 vec)
+        {
+            return new g3.Vector3d(vec.X, vec.Y, vec.Z);
         }
 
         public void Reset()

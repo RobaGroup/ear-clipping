@@ -153,9 +153,19 @@ namespace Triangulation
             return a.Plus(b);
         }
 
+        public static Vector3 operator +(Vector3 a, float b)
+        {
+            return new Vector3(a.X + b, a.Y + b, a.Z + b);
+        }
+
         public static Vector3 operator -(Vector3 a, Vector3 b)
         {
             return a.Minus(b);
+        }
+
+        public static Vector3 operator -(Vector3 a, float b)
+        {
+            return new Vector3(a.X - b, a.Y - b, a.Z - b);
         }
 
         public static Vector3 operator *(Vector3 a, double d)

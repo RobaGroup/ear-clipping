@@ -228,5 +228,19 @@ namespace Intersection
         {
             return $"V1 = {V1.ToString()}, V2 = {V2.ToString()}, V3 = {V3.ToString()}";
         }
+
+        public bool Inside(Vector3 point)
+        {
+            var area = (V1 - V2).Cross(V1 - V3).Length() / 2;
+            var alpha = (point - V2).Cross(point - V3).Length() / (2 * area);
+            var beta = (point - V3).Cross(point - V1).Length() / (2 * area);
+            var gamma = 1 - alpha - beta;
+            return
+                (
+                    gamma >= 0 && gamma <= 1 &&
+                    alpha >= 0 && alpha <= 1 &&
+                    beta >= 0 && beta <= 1
+                );
+        }
     }
 }
