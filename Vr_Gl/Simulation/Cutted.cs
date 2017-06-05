@@ -64,26 +64,35 @@ namespace Vr_Gl.Simulation
                 }
                 //var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
                 var result = IntersectionDetector.Intersect(tri, intersectedTris[i]);
-                List<List<Vector3>> holes = new List<List<Vector3>>();
-                List<Vector3> temp = new List<Vector3>();
-                for (int j = 0; j < result.Count; j++)
-                {
-                     temp.Add(result[j].V1);
-                     temp.Add(result[j].V2);
-                }
                 if (result.Count >= 2)
                 {
-
-                    holes.Add(temp);
-                    List<Vector3> points = tri.Points();
+                    List<List<Vector3>> holes = new List<List<Vector3>>();
+                    ISet<Vector3> t = new HashSet<Vector3>();
+                    //List<Vector3> t = new List<Vector3>();
+                    for (int j = 0; j < result.Count; j++)
+                    {
+                        t.Add(result[j].V1);
+                        t.Add(result[j].V2);
+                    }
+                    var temp = t.ToList();
+                    List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3}.ToList();
+                    var orig1 = (tri.V1 + tri.V2 + tri.V3) / 3;
+                    //var orig2 = temp.Aggregate((x, y) => (x + y)) / temp.Count;
+                    var orig2 = new Vector3(0, 0, 0);
                     EarClipping clipper = new EarClipping();
+                    points.Sort(new CounterClockwiseComp(orig1));
+                    temp.Sort(new ClockwiseComp(orig2));
+                    foreach (var item in temp)
+                    {
+                        Console.WriteLine(item.ToString());
+                    }
+                    holes.Add(temp);
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
-                    var t = clipper.Result;
-                    Console.WriteLine(t.Count);
-                    for (int j = 0; j < t.Count - 2; j += 3)
+                    var te = clipper.Result;
+                    for (int j = 0; j < te.Count - 2; j += 3)
                     {
-                        tris.Add(new Triangle(t[j], t[j + 1], t[j + 2]));
+                        tris.Add(new Triangle(te[j], te[j + 1], te[j + 2]));
                     }
                 }
                 else
@@ -91,7 +100,15 @@ namespace Vr_Gl.Simulation
                     tris.Add(tri);
                 }
             }
+            Console.WriteLine(tris.Count);
             this.Triangles = tris;
+        }
+
+        private void _swap(int i, int j, List<Vector3> temp)
+        {
+            var tt = temp[i];
+            temp[i] = temp[j];
+            temp[i] = tt;
         }
 
         public void Draw(Vector3 color)
@@ -124,6 +141,36 @@ namespace Vr_Gl.Simulation
                 GL.TexCoord2(0.5, 0.5);
                 GL.Vertex3(tri.V3.Data());
                 GL.End();
+            }
+        }
+
+        private class ClockwiseComp : IComparer<Vector3>
+        {
+            Vector3 Origin { get; set; }
+            public ClockwiseComp(Vector3 ori)
+            {
+                Origin = ori;
+            }
+            public int Compare(Vector3 x, Vector3 y)
+            {
+                var angle1 = Math.Abs(Math.Acos((Origin.Dot(x)) / (Origin.Length() * x.Length())));
+                var angle2 = Math.Abs(Math.Acos((Origin.Dot(y)) / (Origin.Length() * y.Length())));
+                return angle1 > angle2 ? 1 : angle2 > angle1 ? -1 : 0;
+            }
+        }
+
+        private class CounterClockwiseComp : IComparer<Vector3>
+        {
+            Vector3 Origin { get; set; }
+            public CounterClockwiseComp(Vector3 ori)
+            {
+                Origin = ori;
+            }
+            public int Compare(Vector3 x, Vector3 y)
+            {
+                var angle1 = Math.Abs(Math.Acos((Origin.Dot(x)) / (Origin.Length() * x.Length())));
+                var angle2 = Math.Abs(Math.Acos((Origin.Dot(y)) / (Origin.Length() * y.Length())));
+                return angle1 > angle2 ? -1 : angle2 > angle1 ? 1 : 0;
             }
         }
     }

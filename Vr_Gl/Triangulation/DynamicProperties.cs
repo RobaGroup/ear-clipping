@@ -17,7 +17,8 @@ namespace Triangulation
 
         internal void AddProperty(PropertyConstants key, object value)
         {
-            _properties.Add(key, value);
+            if(!_properties.ContainsKey(key))
+                _properties.Add(key, value);
         }
 
         internal bool ExistsKey(PropertyConstants key)

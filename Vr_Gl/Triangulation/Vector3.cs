@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Triangulation
 {
-    public class Vector3 : ICloneable
+    public class Vector3 : ICloneable, IEquatable<Vector3>
     {
         internal DynamicProperties DynamicProperties = new DynamicProperties();
 
@@ -135,7 +135,7 @@ namespace Triangulation
                 return false;
             }
 
-            return X == other.X && Y == other.Y && Z == other.Z;
+            return Double.Equals(X, other.X) && Double.Equals(Y, other.Y) && Double.Equals(Z, other.Z);
         }
 
         public override int GetHashCode()
@@ -189,6 +189,11 @@ namespace Triangulation
         public double[] Data()
         {
             return new double[] { X, Y, Z };
+        }
+
+        public bool Equals(Vector3 other)
+        {
+            return double.Equals(this.X, other.X) && Double.Equals(this.Y, other.Y) && Double.Equals(this.Z, other.Z);
         }
     }
 }

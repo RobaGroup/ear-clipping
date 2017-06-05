@@ -100,6 +100,12 @@ namespace Vr_Gl.Graphics
                 case "l":
                     x += 1;
                     break;
+                case ",":
+                    y += 1;
+                    break;
+                case "m":
+                    y -= 1;
+                    break;
                 case "o":
                     rotx += 2;
                     break;
@@ -119,11 +125,11 @@ namespace Vr_Gl.Graphics
                     rotz -= 2;
                     break;
                 case "w":
-                    move.Z = move.Z - delta;
+                    move.Z = move.Z - delta * 2;
                     clicked = true;
                     break;
                 case "s":
-                    move.Z = move.Z + delta;
+                    move.Z = move.Z + delta * 2;
                     clicked = true;
                     break;
                 case "e":
