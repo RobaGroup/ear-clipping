@@ -38,7 +38,7 @@ namespace Vr_Gl
             //{
             //    window.Run(30);
             //}
-            using (MainWindow window = new MainWindow(@"D:/nokia.obj", @"D:/ipad.obj"))
+            using (MainWindow window = new MainWindow(@"D:/pyramid.3ds", @"D:/cube.obj"))
             {
                 window.Run(30);
             }

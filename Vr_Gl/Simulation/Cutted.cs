@@ -20,7 +20,7 @@ namespace Vr_Gl.Simulation
 
         public Cutted(string fileName, Cutter cutter)
         {
-            this.Triangles = new Loader(300).Load(fileName);
+            this.Triangles = new Loader(3).Load(fileName);
             this.Cutter = cutter;
         }
 
@@ -62,19 +62,18 @@ namespace Vr_Gl.Simulation
                     tris.Add(tri);
                     continue;
                 }
-                Console.WriteLine(i);
                 //var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
                 var result = IntersectionDetector.Intersect(tri, intersectedTris[i]);
                 List<List<Vector3>> holes = new List<List<Vector3>>();
                 List<Vector3> temp = new List<Vector3>();
                 for (int j = 0; j < result.Count; j++)
                 {
-                     Console.WriteLine("In");
                      temp.Add(result[j].V1);
                      temp.Add(result[j].V2);
                 }
                 if (result.Count >= 2)
                 {
+
                     holes.Add(temp);
                     List<Vector3> points = tri.Points();
                     EarClipping clipper = new EarClipping();

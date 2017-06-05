@@ -21,7 +21,7 @@ namespace Vr_Gl.Simulation
         public Cutter(string fileName)
         {
             _normals = new List<Vector3>();
-            var tris = new Loader(1000).Load(fileName);
+            var tris = new Loader(40).Load(fileName);
             foreach (var tri in tris)
             {
                 var normal = (tri.V1 - tri.V2).Cross(tri.V1 - tri.V3).Normalized();

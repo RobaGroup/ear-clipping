@@ -17,6 +17,7 @@ namespace Vr_Gl.Graphics
     class MainWindow : GameWindow
     {
         double x = 0, y = 0, z = 0;
+        double rotx = 0, roty = 0, rotz = 0;
         bool clicked = false;
         Triangulation.Vector3 move = new Triangulation.Vector3(0, 0, 0);
         public Cutter Cutter { get; set; }
@@ -49,6 +50,9 @@ namespace Vr_Gl.Graphics
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.Translate(x, y, z);
+            GL.Rotate(rotx, 1, 0, 0);
+            GL.Rotate(roty, 0, 1, 0);
+            GL.Rotate(rotz, 0, 0, 1);
             if (clicked)
             {
                 Cutter.Move(move);
@@ -96,12 +100,38 @@ namespace Vr_Gl.Graphics
                 case "l":
                     x += 1;
                     break;
+                case "o":
+                    rotx += 2;
+                    break;
+                case "u":
+                    rotx -= 2;
+                    break;
+                case "p":
+                    roty += 2;
+                    break;
+                case "[":
+                    rotz += 2;
+                    break;
+                case "y":
+                    roty -= 2;
+                    break;
+                case "t":
+                    rotz -= 2;
+                    break;
                 case "w":
                     move.Z = move.Z - delta;
                     clicked = true;
                     break;
                 case "s":
                     move.Z = move.Z + delta;
+                    clicked = true;
+                    break;
+                case "e":
+                    move.Y = move.Y + delta;
+                    clicked = true;
+                    break;
+                case "q":
+                    move.Y = move.Y - delta;
                     clicked = true;
                     break;
                 case "a":
