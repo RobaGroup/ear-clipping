@@ -67,6 +67,7 @@ namespace Vr_Gl.Simulation
                 {
                     List<List<Vector3>> holes = new List<List<Vector3>>();
                     ISet<Vector3> t = new HashSet<Vector3>();
+                    List<List<int>> insides = new List<List<int>>();
                     for (int j = 0; j < result.Count; j++)
                     {
                         if (result[j].Item1)
@@ -75,6 +76,8 @@ namespace Vr_Gl.Simulation
                             {
                                 t.Add(result[j].Item2.V1);
                                 t.Add(result[j].Item2.V2);
+                                // u have the segment(result[j].Item2) and triangle(tri) now put the indices
+                                // for example if V1 is inside the polyhedron then insides.Add(new int[]{1}.ToList())
                             }
                         }
                     }
