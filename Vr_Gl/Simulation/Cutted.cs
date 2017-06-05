@@ -62,21 +62,21 @@ namespace Vr_Gl.Simulation
                     tris.Add(tri);
                     continue;
                 }
-                //var result = IntersectionDetector.Detect(tri, intersectedTris[i]);
                 var result = IntersectionDetector.Intersect(tri, intersectedTris[i]);
                 if (result.Count >= 2)
                 {
                     List<List<Vector3>> holes = new List<List<Vector3>>();
                     ISet<Vector3> t = new HashSet<Vector3>();
-                    //List<Vector3> t = new List<Vector3>();
                     for (int j = 0; j < result.Count; j++)
                     {
                         t.Add(result[j].V1);
                         t.Add(result[j].V2);
+                        if(result[j].V1 == null || result[j].V2 == null)
+                            Console.WriteLine("What");
                     }
                     var temp = t.ToList();
                     List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3}.ToList();
-                    var orig1 = (tri.V1 + tri.V2 + tri.V3) / 3;
+                    var orig1 = ((tri.V1 + tri.V2 / 2)+ tri.V3) / 2;
                     var orig2 = new Vector3(0, 0, 0);
                     for (int k = 0; k < temp.Count - 1; k += 2)
                     {
@@ -89,6 +89,7 @@ namespace Vr_Gl.Simulation
                     {
                         Console.WriteLine(item.ToString());
                     }
+                    Console.WriteLine();
                     holes.Add(temp);
                     clipper.SetPoints(points, holes);
                     clipper.Triangulate();
@@ -104,6 +105,19 @@ namespace Vr_Gl.Simulation
                 }
             }
             this.Triangles = tris;
+            Cutter.Reset();
+            this.Reset();
+        }
+
+        public void Reset()
+        {
+            for (int i = 0; i < Triangles.Count; i++)
+            {
+                var tri = Triangles[i];
+                tri.V1.DynamicProperties = new DynamicProperties();
+                tri.V2.DynamicProperties = new DynamicProperties();
+                tri.V3.DynamicProperties = new DynamicProperties();
+            }
         }
 
         private void _swap(int i, int j, List<Vector3> temp)

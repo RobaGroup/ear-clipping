@@ -42,6 +42,18 @@ namespace Vr_Gl.Simulation
             this.Texture = AssetsLoader.LoadTexture(texturePath);
         }
 
+
+        public void Reset()
+        {
+            for (int i = 0; i < Tree.Triangles.Count; i++)
+            {
+                var tri = Tree.Triangles[i];
+                tri.V1.DynamicProperties = new DynamicProperties();
+                tri.V2.DynamicProperties = new DynamicProperties();
+                tri.V3.DynamicProperties = new DynamicProperties();
+            }
+        }
+
         public Cutter(string fileName, Vector3 initialPos, string texturePath = "D:/cutter.jpg") : this(fileName)
         {
             this.Move(initialPos);
