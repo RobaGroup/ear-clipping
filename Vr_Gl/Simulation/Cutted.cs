@@ -81,7 +81,7 @@ namespace Vr_Gl.Simulation
                     //    orig2 = (orig2 + (temp[k] + temp[k + 1]) / 2) / 2;
                     //}
                     //orig2 = temp.Aggregate((x, y) => x + y) / temp.Count;
-                    points = SortVerticies((points[0] - points[1]).Cross(points[0] - points[2]), points);
+                    points = SortVerticies(points);
                     points.Reverse();
                     Console.WriteLine("Before:");
                     foreach (var item in temp)
@@ -90,7 +90,7 @@ namespace Vr_Gl.Simulation
                     }
                     //points.Sort(new CounterClockwiseComp(orig1));
                     //temp.Sort(new ClockwiseComp(orig2));
-                    temp = SortVerticies((temp[1] - temp[0]).Cross(temp[2] - temp[0]), temp);
+                    temp = SortVerticies(temp);
                     Console.WriteLine("After:");
                     foreach (var item in temp)
                     {
@@ -199,34 +199,88 @@ namespace Vr_Gl.Simulation
             }
         }
 
-        public static List<Vector3> SortVerticies(Vector3 normal, List<Vector3> nodes)
+        public static List<Vector3> SortVerticies(List<Vector3> nodes)
         {
 
-            Vector3 first = nodes[0];
+            //Vector3 first = nodes[0];
 
-            //Sort by distance from random point to get 2 adjacent points.
-            List<Vector3> temp = nodes.OrderBy(n => (n - first).Length()).ToList();
+            ////Sort by distance from random point to get 2 adjacent points.
+            //List<Vector3> temp = nodes.OrderBy(n => (n - first).Length()).ToList();
 
-            //Create a vector from the 2 adjacent points,
-            //this will be used to sort all points, except the first, by the angle to this vector.
-            //Since the shape is convex, angle will not exceed 180 degrees, resulting in a proper sort.
-            Vector3 refrenceVec = (temp[1] - first);
+            ////Create a vector from the 2 adjacent points,
+            ////this will be used to sort all points, except the first, by the angle to this vector.
+            ////Since the shape is convex, angle will not exceed 180 degrees, resulting in a proper sort.
+            //Vector3 refrenceVec = (temp[1] - first);
 
-            //Sort by angle to reference, but we are still missing the first one.
-            List<Vector3> results = temp.Skip(1).OrderBy(n => refrenceVec.Angle(n - first)).ToList();
+            ////Sort by angle to reference, but we are still missing the first one.
+            //List<Vector3> results = temp.Skip(1).OrderBy(n => refrenceVec.Angle(n - first)).ToList();
 
-            //insert the first one, at index 0.
-            results.Insert(0, nodes[0]);
+            ////insert the first one, at index 0.
+            //results.Insert(0, nodes[0]);
 
-            //Now that it is sorted, we check if we got the direction right, if we didn't we reverse the list.
-            //We compare the given normal and the cross product of the first 3 point.
-            //If the magnitude of the sum of the normal and cross product is less than Sqrt(2) then then there is more than 90 between them.
-            if (((results[1] - results[0]).Cross(results[2]- results[0]).Normalized() + normal.Normalized()).Length() < 1.414f)
+            ////Now that it is sorted, we check if we got the direction right, if we didn't we reverse the list.
+            ////We compare the given normal and the cross product of the first 3 point.
+            ////If the magnitude of the sum of the normal and cross product is less than Sqrt(2) then then there is more than 90 between them.
+            //if (((results[1] - results[0]).Cross(results[2]- results[0]).Normalized() + normal.Normalized()).Length() < 1.414f)
+            //{
+            //    results.Reverse();
+            //}
+
+            //return results;
+
+            var vertices = nodes;
+            var center = vertices.Aggregate((x, y) => x + y) / vertices.Count;
+            var normal = (vertices[1] - vertices[0]).Cross(vertices[2] - vertices[0]);
+            var before = new List<Vector3>();
+            foreach (var item in vertices)
             {
-                results.Reverse();
+                before.Add(item);
             }
-
-            return results;
+            int size = vertices.Count;
+            for (int i = 0; i < size; i++)
+            {
+                var tt = new List<Vector3>();
+                vertices = new List<Vector3>();
+                foreach (var item in before)
+                {
+                    vertices.Add(item);
+                }
+                tt.Add(vertices[i]);
+                Vector3 current = vertices[i];
+                vertices.RemoveAt(i);
+                int cnt = vertices.Count;
+                while (cnt > 0)
+                {
+                    bool done = false;
+                    for (int j = 0; j < vertices.Count; j++)
+                    {
+                        var t = normal.Dot((current - center).Cross(vertices[j] - center));
+                        if (t < 0)
+                        {
+                            tt.Add(vertices[j]);
+                            current = vertices[j];
+                            vertices.RemoveAt(j);
+                            done = true;
+                            break;
+                        }
+                    }
+                    if (done)
+                    {
+                        cnt--;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if(cnt == 0)
+                    return tt;
+                else
+                {
+                    continue;
+                }
+            }
+            throw new Exception("Holy shit");
         }
     }
 }
