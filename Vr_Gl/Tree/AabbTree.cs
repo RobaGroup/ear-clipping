@@ -13,11 +13,12 @@ namespace Tree
 {
     public class AabbTree
     {
-
         static int LeafSize = 1;
         private Node _root;
         public Node Root { get { return _root; } set { _root = value; } }
         public List<Triangle> Triangles { get; set; }
+        private object obj = new object();
+        private List<Task> tasks = new List<Task>();
         public AabbTree(List<Triangle> triangles)
         {    
             Triangles = triangles;

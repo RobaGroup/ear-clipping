@@ -38,6 +38,8 @@ namespace Vr_Gl.Graphics
             Title = "Test";
             GL.ClearColor(0, 0, 0, 0);
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Texture2D);
+            GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

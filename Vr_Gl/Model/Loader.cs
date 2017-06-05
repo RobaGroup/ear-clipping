@@ -23,7 +23,7 @@ namespace Vr_Gl.Model
             AssimpContext importer = new AssimpContext();
             //importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
             List<Triangle> tris = new List<Triangle>();
-            Scene scene = importer.ImportFile(fileName, PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.JoinIdenticalVertices);
+            Scene scene = importer.ImportFile(fileName, PostProcessSteps.Triangulate | PostProcessSteps.FlipUVs | PostProcessSteps.JoinIdenticalVertices | PostProcessSteps.OptimizeGraph | PostProcessSteps.SplitLargeMeshes | PostProcessSteps.GenerateNormals);
             foreach (var mesh in scene.Meshes)
             {
                 foreach (var face in mesh.Faces)
@@ -36,5 +36,7 @@ namespace Vr_Gl.Model
             }
             return tris;
         }
+
+        
     }
 }
