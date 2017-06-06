@@ -78,5 +78,24 @@ namespace Intersection
             return segements;
         }
 
+        public static List<Tuple<Segment, Triangle>> IntersectWithTriangles(Triangle tri, List<Triangle> tris)
+        {
+            var segements = new List<Tuple<Segment, Triangle>>();
+            Triangle3f temp1 = _transform(tri);
+            foreach (var item in tris)
+            {
+                Triangle3f temp2 = _transform(item);
+                IntrTriangle3Triangle3 inter = new IntrTriangle3Triangle3(temp1, temp2);
+                inter = inter.Compute();
+                if (inter.Result == IntersectionResult.Intersects && inter.Type == IntersectionType.Segment)
+                {
+                    var t1 = inter.Points[0];
+                    var t2 = inter.Points[1];
+                    segements.Add(new Tuple<Segment, Triangle>(new Segment(new Triangulation.Vector3(t1.x, t1.y, t1.z), new Triangulation.Vector3(t2.x, t2.y, t2.z)), tri));
+                }
+            }
+            return segements;
+        }
+
     }
 }

@@ -231,9 +231,9 @@ namespace Intersection
 
         public bool Inside(Vector3 point)
         {
-            var area = (V1 - V2).Cross(V1 - V3).Length() / 2;
-            var alpha = (point - V2).Cross(point - V3).Length() / (2 * area);
-            var beta = (point - V3).Cross(point - V1).Length() / (2 * area);
+            var area = (V2 - V1).Cross(V3 - V1).Length() / 2;
+            var alpha = (V2 - point).Cross(V3 - point).Length() / (2 * area);
+            var beta = (V3 - point).Cross(V1 - point).Length() / (2 * area);
             var gamma = 1 - alpha - beta;
             return
                 (
@@ -241,6 +241,26 @@ namespace Intersection
                     alpha >= 0 && alpha <= 1 &&
                     beta >= 0 && beta <= 1
                 );
+        }
+
+        public Vector3 Normal()
+        {
+            return (V1 - V2).Cross(V1 - V3);
+        }
+
+        public Vector3 this[int num]
+        {
+            get
+            {
+                return num == 0 ? V1 : num == 1 ? V2 : V3;
+            }
+        }
+
+        public Triangle(List<Vector3> points)
+        {
+            this.V1 = points[0];
+            this.V2 = points[1];
+            this.V3 = points[2];
         }
     }
 }

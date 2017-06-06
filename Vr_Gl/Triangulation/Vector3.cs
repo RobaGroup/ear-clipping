@@ -217,5 +217,11 @@ namespace Triangulation
         {
             return Math.Acos((this.Dot(other)) / (this.Length() * other.Length()));
         }
+        
+
+        public bool IsParallel(Vector3 other)
+        {
+            return Math.Abs(Angle(other)) <= 0.001;
+        }
     }
 }

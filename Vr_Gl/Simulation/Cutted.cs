@@ -8,6 +8,8 @@ using Triangulation;
 using OpenTK.Graphics.OpenGL;
 using Vr_Gl.Model;
 using Vr_Gl.Graphics;
+using GeoAPI.Geometries;
+using NetTopologySuite.Triangulate.QuadEdge;
 
 namespace Vr_Gl.Simulation
 {
@@ -57,37 +59,186 @@ namespace Vr_Gl.Simulation
             for (int i = 0; i < Triangles.Count; i++)
             {
                 var tri = Triangles[i];
-                if(intersectedTris[i].Count == 0)
+                if (intersectedTris[i].Count == 0)
                 {
                     tris.Add(tri);
                     continue;
                 }
-                var result = IntersectionDetector.IntersectWithBool(tri, intersectedTris[i]);
-                if (result.Count(x => x.Item1) >= 2)
+                var result = IntersectionDetector.IntersectWithTriangles(tri, intersectedTris[i]);
+                if (result.Count >= 2)
                 {
                     List<List<Vector3>> holes = new List<List<Vector3>>();
                     ISet<Vector3> t = new HashSet<Vector3>();
                     List<List<int>> insides = new List<List<int>>();
+                    bool anyOutside = false;
                     for (int j = 0; j < result.Count; j++)
                     {
-                        if (result[j].Item1)
+                        if (tri.Inside(result[j].Item1.V1) && tri.Inside(result[j].Item1.V2))
                         {
-                            if (tri.Inside(result[j].Item2.V1) && tri.Inside(result[j].Item2.V2))
-                            {
-                                t.Add(result[j].Item2.V1);
-                                t.Add(result[j].Item2.V2);
-                                // u have the segment(result[j].Item2) and triangle(tri) now put the indices
-                                // for example if V1 is inside the polyhedron then insides.Add(new int[]{1}.ToList())
-                            }
+                            t.Add(result[j].Item1.V1);
+                            t.Add(result[j].Item1.V2);
+                            Vector3 directed_seg = result[j].Item2.V2 - result[j].Item2.V1;
+                            Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
+                            List<int> inn = new List<int>();
+                            if ((tri.V1 - result[j].Item2.V1).Dot(inside_dir) >= 0)
+                                inn.Add(1);
+                            if ((tri.V2 - result[j].Item2.V1).Dot(inside_dir) >= 0)
+                                inn.Add(2);
+                            if ((tri.V3 - result[j].Item2.V1).Dot(inside_dir) >= 0)
+                                inn.Add(3);
+                            insides.Add(inn);
                         }
                     }
-                    if (t.Count <= 3)
+                    if (t.Count <= 2)
                     {
                         tris.Add(new Triangle(tri));
                         continue;
                     }
                     var temp = t.ToList();
-                    List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3}.ToList();
+                    Func<int, int, Vector3> select = (ff, vv) => result[ff].Item2[vv];
+                    for (int k = 0; k < insides.Count; ++k)
+                    {
+                        if (insides[i].Count == 1)
+                        {
+
+                        }
+                    }
+                    if (anyOutside)
+                    {
+                        NetTopologySuite.Geometries.LinearRing ring = new NetTopologySuite.Geometries.LinearRing(new Coordinate[] { new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z), new Coordinate(tri.V2.X, tri.V2.Y, tri.V2.Z), new Coordinate(tri.V3.X, tri.V3.Y, tri.V3.Z), new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z) });
+                        List<Coordinate> holesCoords = new List<Coordinate>();
+                        List<Vertex> vertices = new Vertex[] { new Vertex(tri.V1.X, tri.V1.Y, tri.V1.Z), new Vertex(tri.V2.X, tri.V2.Y, tri.V2.Z), new Vertex(tri.V3.X, tri.V3.Y, tri.V3.Z) }.ToList();
+                        //foreach (var item in temp)
+                        //{
+                        //    holesCoords.Add(new Coordinate(item.X, item.Y, item.Z));
+                        //}
+                        List<NetTopologySuite.Triangulate.Segment> segments = new List<NetTopologySuite.Triangulate.Segment>();
+                        List<Vertex> holesVertices = new List<Vertex>();
+                        for (int v = 0; v < temp.Count - 1; v += 2)
+                        {
+                            holesVertices.Add(new Vertex(temp[v].X, temp[v].Y, temp[v].Z));
+                            holesVertices.Add(new Vertex(temp[v + 1].X, temp[v + 1].Y, temp[v + 1].Z));
+                            segments.Add(new NetTopologySuite.Triangulate.Segment(temp[v].X, temp[v].Y, temp[v].Z, temp[v + 1].X, temp[v + 1].Y, temp[v + 1].Z));
+                        }
+                        //holesCoords.Add(new Coordinate(temp[0].X, temp[0].Y, temp[0].Z));
+                        //var holesRing = new NetTopologySuite.Geometries.LinearRing(holesCoords.ToArray());
+                        NetTopologySuite.Triangulate.ConformingDelaunayTriangulator triss = new NetTopologySuite.Triangulate.ConformingDelaunayTriangulator(vertices, 0.0001);
+                        //triss.SetConstraints(segments, holesVertices);
+                        triss.SetConstraints(segments, holesVertices);
+                        triss.FormInitialDelaunay();
+                        triss.EnforceConstraints();
+                        var ttt = triss.Subdivision.GetTriangles(NetTopologySuite.Geometries.Geometry.DefaultFactory);
+                        foreach (var tttt in ttt)
+                        {
+                            tris.Add(new Triangle(tttt.Coordinates.Select(x => new Vector3(x.X, x.Y, x.Z)).ToList()));
+                        }
+                        //NetTopologySuite.Geometries.Polygon triPolygon = new NetTopologySuite.Geometries.Polygon(ring, new ILinearRing[] { holesRing});
+                        //NetTopologySuite.Triangulate.DelaunayTriangulationBuilder bu = new NetTopologySuite.Triangulate.DelaunayTriangulationBuilder();
+                        //bu.SetSites(triPolygon);
+                        //var triis = bu.GetTriangles(NetTopologySuite.Geometries.Geometry.DefaultFactory);
+                        //foreach (var item1 in triis)
+                        //{
+                        //    var pos = item1.Coordinates.Select(x => new Vector3(x.X, x.Y, x.Z)).ToList();
+                        //    tris.Add(new Triangle(pos));
+                        //}
+                        //NetTopologySuite.Geometries.Polygon holePolygon = new NetTopologySuite.Geometries.Polygon(holesRing);
+                        //var cut = triPolygon.Difference(holePolygon);
+                        //foreach (var item in cut)
+                        //{
+                        //    NetTopologySuite.Triangulate.DelaunayTriangulationBuilder bu = new NetTopologySuite.Triangulate.DelaunayTriangulationBuilder();
+                        //    bu.SetSites(item);
+                        //    var triis = bu.GetTriangles(NetTopologySuite.Geometries.Geometry.DefaultFactory);
+                        //    foreach (var item1 in triis)
+                        //    {
+                        //        var pos = item1.Coordinates.Select(x => new Vector3(x.X, x.Y, x.Z)).ToList();
+                        //        tris.Add(new Triangle(pos));
+                        //    }
+                        //}
+                        continue;
+                    }
+                    //if (allOutside)
+                    //{
+                    //    var zAxis = new Vector3(0, 0, 1);
+                    //    var normal = tri.Normal();
+                    //    var rotAxis = normal.Cross(zAxis).Normalized();
+                    //    var angle = Math.Acos(zAxis.Dot(normal));
+                    //    var rot = OpenTK.Matrix4.CreateFromAxisAngle(new OpenTK.Vector3((float)rotAxis.X, (float)rotAxis.Y, (float)rotAxis.Z), (float)angle);
+                    //    List<Tuple<int, OpenTK.Vector4>> modified = new List<Tuple<int, OpenTK.Vector4>>();
+                    //    List<List<int>> indices = new List<List<int>>();
+                    //    var xAxis = new Vector3(1, 0, 0);
+                    //    var t1 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
+                    //    var t2 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
+                    //    var t3 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
+                    //    //var v1 = new Vector3(t1.X, t1.Y, t1.Z);
+                    //    //var v2 = new Vector3(t2.X, t2.Y, t2.Z);
+                    //    //var v3 = new Vector3(t3.X, t3.Y, t3.Z);
+                    //    int cnt = 1;
+                    //    for (int v = 0; v < temp.Count; ++v)
+                    //    {
+                    //        var tt = rot * new OpenTK.Vector4((float)temp[v].X, (float)temp[v].Y, (float)temp[v].Z, 1);
+                    //        if (new Vector3(tt.X, tt.Y, tt.Z).IsParallel(xAxis))
+                    //        {
+                    //            List<int> ints = new List<int>();
+                    //            modified.Add(new Tuple<int, OpenTK.Vector4>(v, tt));
+                    //            if(cnt % 2 == 1)
+                    //            {
+                    //                if (t1.Y < tt.Y)
+                    //                {
+                    //                    ints.Add(0);
+                    //                }
+                    //                if (t2.Y < tt.Y)
+                    //                {
+                    //                    ints.Add(1);
+                    //                }
+                    //                if (t3.Y < tt.Y)
+                    //                {
+                    //                    ints.Add(2);
+                    //                }
+                    //            }
+                    //            else
+                    //            {
+                    //                if (t1.Y > tt.Y)
+                    //                {
+                    //                    ints.Add(0);
+                    //                }
+                    //                if (t2.Y > tt.Y)
+                    //                {
+                    //                    ints.Add(1);
+                    //                }
+                    //                if (t3.Y > tt.Y)
+                    //                {
+                    //                    ints.Add(2);
+                    //                }
+                    //            }
+                    //            indices.Add(ints);
+                    //            cnt++;
+                    //        }
+                    //    }
+                    //    modified.Sort((x, y) => x.Item2.Y > y.Item2.Y ? 1 : x.Item2.Y < y.Item2.Y ? -1 : 0);
+                    //    List<Vector3> res = new List<Vector3>();
+                    //    List<List<Vector3>> neighs = new List<List<Vector3>>();
+                    //    cnt = 0;
+                    //    foreach (var item in modified)
+                    //    {
+                    //        res.Add(temp[item.Item1]);
+                    //        List<Vector3> neigh = new List<Vector3>();
+                    //        foreach (var item1 in indices[cnt])
+                    //        {
+                    //            neigh.Add(tri[item1]);
+                    //        }
+                    //        neighs.Add(neigh);
+                    //        ++cnt;
+                    //    }
+                    //    if(res.Count == 2)
+                    //    {
+                    //        for (int k = 0; k < res.Count; k++)
+                    //        {
+
+                    //        }
+                    //    }
+                    //    continue;
+                    //}
+                    List<Vector3> points = new Vector3[] { tri.V1, tri.V2, tri.V3 }.ToList();
                     //var orig1 = ((tri.V1 + tri.V2 / 2) + tri.V3) / 2;
                     //var orig2 = new Vector3(0, 0, 0);
                     //for (int k = 0; k < temp.Count - 1; k += 2)
@@ -100,16 +251,16 @@ namespace Vr_Gl.Simulation
                     //points.Sort(new CounterClockwiseComp(orig1));
                     //temp.Sort(new ClockwiseComp(orig2));
                     temp = SortVerticies(temp);
-                    Console.WriteLine("After:");
-                    foreach (var item in temp)
-                    {
-                        Console.WriteLine(item.ToString());
-                    }
-                    Console.WriteLine(points[0].ToString());
-                    Console.WriteLine(points[1].ToString());
-                    Console.WriteLine(points[2].ToString());
-                    Console.WriteLine();
-                    Console.WriteLine();
+                    //Console.WriteLine("After:");
+                    //foreach (var item in temp)
+                    //{
+                    //    Console.WriteLine(item.ToString());
+                    //}
+                    //Console.WriteLine(points[0].ToString());
+                    //Console.WriteLine(points[1].ToString());
+                    //Console.WriteLine(points[2].ToString());
+                    //Console.WriteLine();
+                    //Console.WriteLine();
                     holes.Add(temp);
                     EarClipping clipper = new EarClipping();
                     clipper.SetPoints(points, holes);
@@ -291,7 +442,7 @@ namespace Vr_Gl.Simulation
                         break;
                     }
                 }
-                if(cnt == 0)
+                if (cnt == 0)
                     return tt;
                 else
                 {
