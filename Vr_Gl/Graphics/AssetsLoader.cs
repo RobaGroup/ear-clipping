@@ -30,12 +30,13 @@ namespace Vr_Gl.Graphics
             return texture;
         }
 
-        public static int LoadTexture(Bitmap bitmap)
+        public static int LoadTexture(Bitmap bmp)
         {
+            Bitmap bitmap = new Bitmap(bmp);   
             int texture;
             GL.GenTextures(1, out texture);
             GL.BindTexture(TextureTarget.Texture2D, texture);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapNearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
             BitmapData data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
