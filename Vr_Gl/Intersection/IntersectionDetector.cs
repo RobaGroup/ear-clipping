@@ -91,7 +91,7 @@ namespace Intersection
                 {
                     var t1 = inter.Points[0];
                     var t2 = inter.Points[1];
-                    segements.Add(new Tuple<Segment, Triangle>(new Segment(new Triangulation.Vector3(t1.x, t1.y, t1.z), new Triangulation.Vector3(t2.x, t2.y, t2.z)), tri));
+                    segements.Add(new Tuple<Segment, Triangle>(new Segment(new Triangulation.Vector3(t1.x, t1.y, t1.z), new Triangulation.Vector3(t2.x, t2.y, t2.z)), item));
                 }
             }
             return segements;
