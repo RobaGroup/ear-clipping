@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
-using VR_Project.Properties;
+using Vr_Gl;
+using Vr_Gl.Graphics;
+using Vr_Gl.Properties;
 
-namespace VR_Project
+namespace Vr_Gl
 {
     class Counter :DrawingObject
     {
@@ -16,7 +18,7 @@ namespace VR_Project
             //GL.Enable(EnableCap.Texture2D);
 
             //GL.BindTexture(TextureTarget.ProxyTexture2D, Texture);
-            Texture = VR_Project.Texture.id(Resources.Wood);
+            Texture = AssetsLoader.LoadTexture(@"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Base.bmp");
             Material = CustomMaterial.Chrome;
         }
 
