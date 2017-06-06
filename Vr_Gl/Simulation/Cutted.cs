@@ -85,9 +85,9 @@ namespace Vr_Gl.Simulation
                             List<int> inn = new List<int>();
                             if ((cuttedTri.V1 - cutterTri.V1).Dot(inside_dir) >= 0)
                                 inn.Add(0);
-                            if ((cuttedTri.V2 - cutterTri.V1).Dot(inside_dir) >= 0)
+                            if ((cuttedTri.V2 - cutterTri.V2).Dot(inside_dir) >= 0)
                                 inn.Add(1);
-                            if ((cuttedTri.V3 - cutterTri.V1).Dot(inside_dir) >= 0)
+                            if ((cuttedTri.V3 - cutterTri.V3).Dot(inside_dir) >= 0)
                                 inn.Add(2);
                             insides.Add(inn);
                         }
