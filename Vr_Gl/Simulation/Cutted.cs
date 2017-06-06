@@ -84,11 +84,12 @@ namespace Vr_Gl.Simulation
                             Vector3 directed_seg = result[j].Item1.V2 - result[j].Item1.V1;
                             Vector3 inside_dir = cutterTri.Normal().Normalized().Cross(directed_seg);
                             List<int> inn = new List<int>();
-                            if ((result[j].Item1.V1 - cutterTri.V1).Dot(inside_dir) >= 0)
+                            var f = result[j].Item1;
+                            if ((f.V1 - cutterTri.V1).Dot(inside_dir) >= 0)
                                 inn.Add(0);
-                            if ((result[j].Item1.V1 - cutterTri.V2).Dot(inside_dir) >= 0)
+                            if ((f.V1 - cutterTri.V2).Dot(inside_dir) >= 0)
                                 inn.Add(1);
-                            if ((result[j].Item1.V1 - cutterTri.V3).Dot(inside_dir) >= 0)
+                            if ((f.V1 - cutterTri.V3).Dot(inside_dir) >= 0)
                                 inn.Add(2);
                             insides.Add(inn);
                         }
