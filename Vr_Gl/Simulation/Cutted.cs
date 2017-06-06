@@ -125,70 +125,72 @@ namespace Vr_Gl.Simulation
                     Console.WriteLine(anyOutside);
                     if (anyOutside)
                     {
-                        int factor = 1000;
-                        var zAxis = new Vector3(0, 0, 1);
-                        var normal = tri.Normal();
-                        var rotAxis = normal.Cross(zAxis);
-                        bool ignore = rotAxis.IsMostlyZero();
-                        if (!ignore)
-                            rotAxis = rotAxis.Normalized();
-                        var angle = Math.Acos(zAxis.Dot(normal));
-                        var rot = OpenTK.Matrix4.CreateFromAxisAngle(new OpenTK.Vector3((float)rotAxis.X, (float)rotAxis.Y, (float)rotAxis.Z), (float)angle);
-                        var revRot = OpenTK.Matrix4.CreateFromAxisAngle(new OpenTK.Vector3((float)rotAxis.X, (float)rotAxis.Y, (float)rotAxis.Z), ((float)-angle));
-                        Func<Vector3, IntPoint> to2D = (vec) =>
-                        {
-                            Vector3 vecc = vec;
-                            //var ress = rot * new OpenTK.Vector4((float)vecc.X, (float)vecc.Y, (float)vecc.Z, 1);
-                            double x = vec.X * rot.M11 + vec.Y * rot.M12 + vec.Z * rot.M13, 
-                                   y = vec.X * rot.M21 + vec.Y * rot.M22 + vec.Z * rot.M23,
-                                   z = vec.X * rot.M31 + vec.Y * rot.M32 + vec.Z * rot.M33;
-                            return !ignore ? new IntPoint((int)(x * factor), (int)(y * factor)) : new IntPoint((int)(vec.X * factor), (int)(vec.Y * factor));
-                        };
+                        tris.Add(tri);
+                        continue;
+                        //int factor = 1000;
+                        //var zAxis = new Vector3(0, 0, 1);
+                        //var normal = tri.Normal();
+                        //var rotAxis = normal.Cross(zAxis);
+                        //bool ignore = rotAxis.IsMostlyZero();
+                        //if (!ignore)
+                        //    rotAxis = rotAxis.Normalized();
+                        //var angle = Math.Acos(zAxis.Dot(normal));
+                        //var rot = OpenTK.Matrix4.CreateFromAxisAngle(new OpenTK.Vector3((float)rotAxis.X, (float)rotAxis.Y, (float)rotAxis.Z), (float)angle);
+                        //var revRot = OpenTK.Matrix4.CreateFromAxisAngle(new OpenTK.Vector3((float)rotAxis.X, (float)rotAxis.Y, (float)rotAxis.Z), ((float)-angle));
+                        //Func<Vector3, IntPoint> to2D = (vec) =>
+                        //{
+                        //    Vector3 vecc = vec;
+                        //    //var ress = rot * new OpenTK.Vector4((float)vecc.X, (float)vecc.Y, (float)vecc.Z, 1);
+                        //    double x = vec.X * rot.M11 + vec.Y * rot.M12 + vec.Z * rot.M13, 
+                        //           y = vec.X * rot.M21 + vec.Y * rot.M22 + vec.Z * rot.M23,
+                        //           z = vec.X * rot.M31 + vec.Y * rot.M32 + vec.Z * rot.M33;
+                        //    return !ignore ? new IntPoint((int)(x * factor), (int)(y * factor)) : new IntPoint((int)(vec.X * factor), (int)(vec.Y * factor));
+                        //};
 
-                        Func<IntPoint, Vector3> to3D = (point) =>
-                        {
-                            double x = point.X * rot.M11 + point.Y * rot.M12 ,
-                                   y = point.X * rot.M21 + point.Y * rot.M22,
-                                   z = point.X * rot.M31 + point.Y * rot.M32;
-                            return (!ignore ? new Vector3(x / factor, y / factor, z) : new Vector3((float)point.X / factor, (float)point.Y / factor, 0.01));
-                        };
-                        //    List<Tuple<int, OpenTK.Vector4>> modified = new List<Tuple<int, OpenTK.Vector4>>();
-                        //    List<List<int>> indices = new List<List<int>>();
-                        //    var xAxis = new Vector3(1, 0, 0);
-                        //    var t1 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
-                        //    var t2 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
-                        //    var t3 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
-                        List<IntPoint> subj = new List<IntPoint>();
-                        var c1 = to2D(tri.V1);
-                        var c2 = to2D(tri.V2);
-                        var c3 = to2D(tri.V3);
-                        subj.Add(c1);
-                        subj.Add(c2);
-                        subj.Add(c3);
-                        List<IntPoint> clip = new List<IntPoint>();
-                        foreach (var item in temp)
-                        {
-                            clip.Add(to2D(item));
-                        }
-                        List<List<IntPoint>> sol = new List<List<IntPoint>>();
-                        Clipper c = new Clipper();
-                        c.AddPolygon(subj, PolyType.ptSubject);
-                        c.AddPolygon(clip, PolyType.ptClip);
-                        c.Execute(ClipType.ctDifference, sol, PolyFillType.pftEvenOdd, PolyFillType.pftEvenOdd);
-                        Console.WriteLine(sol.Count);
-                        foreach (var item in sol)
-                        {
-                            var ps = item.Select(to3D).ToList();
-                            ps = SortVerticies(ps);
-                            EarClipping cp = new EarClipping();
-                            cp.SetPoints(ps);
-                            cp.Triangulate();
-                            var tes = cp.Result;
-                            for (int j = 0; j < tes.Count - 2; j += 3)
-                            {
-                                tris.Add(new Triangle(tes[j], tes[j + 1], tes[j + 2]));
-                            }
-                        }
+                        //Func<IntPoint, Vector3> to3D = (point) =>
+                        //{
+                        //    double x = point.X * rot.M11 + point.Y * rot.M12 ,
+                        //           y = point.X * rot.M21 + point.Y * rot.M22,
+                        //           z = point.X * rot.M31 + point.Y * rot.M32;
+                        //    return (!ignore ? new Vector3(x / factor, y / factor, z) : new Vector3((float)point.X / factor, (float)point.Y / factor, 0.01));
+                        //};
+                        ////    List<Tuple<int, OpenTK.Vector4>> modified = new List<Tuple<int, OpenTK.Vector4>>();
+                        ////    List<List<int>> indices = new List<List<int>>();
+                        ////    var xAxis = new Vector3(1, 0, 0);
+                        ////    var t1 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
+                        ////    var t2 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
+                        ////    var t3 = rot * new OpenTK.Vector4((float)tri.V1.X, (float)tri.V1.Y, (float)tri.V1.Z, 1);
+                        //List<IntPoint> subj = new List<IntPoint>();
+                        //var c1 = to2D(tri.V1);
+                        //var c2 = to2D(tri.V2);
+                        //var c3 = to2D(tri.V3);
+                        //subj.Add(c1);
+                        //subj.Add(c2);
+                        //subj.Add(c3);
+                        //List<IntPoint> clip = new List<IntPoint>();
+                        //foreach (var item in temp)
+                        //{
+                        //    clip.Add(to2D(item));
+                        //}
+                        //List<List<IntPoint>> sol = new List<List<IntPoint>>();
+                        //Clipper c = new Clipper();
+                        //c.AddPolygon(subj, PolyType.ptSubject);
+                        //c.AddPolygon(clip, PolyType.ptClip);
+                        //c.Execute(ClipType.ctDifference, sol, PolyFillType.pftEvenOdd, PolyFillType.pftEvenOdd);
+                        //Console.WriteLine(sol.Count);
+                        //foreach (var item in sol)
+                        //{
+                        //    var ps = item.Select(to3D).ToList();
+                        //    ps = SortVerticies(ps);
+                        //    EarClipping cp = new EarClipping();
+                        //    cp.SetPoints(ps);
+                        //    cp.Triangulate();
+                        //    var tes = cp.Result;
+                        //    for (int j = 0; j < tes.Count - 2; j += 3)
+                        //    {
+                        //        tris.Add(new Triangle(tes[j], tes[j + 1], tes[j + 2]));
+                        //    }
+                        //}
                         //var ring = new NetTopologySuite.Geometries.LinearRing(new Coordinate[] { new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z), new Coordinate(tri.V2.X, tri.V2.Y, tri.V2.Z), new Coordinate(tri.V3.X, tri.V3.Y, tri.V3.Z), new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z) });
                         //List<Coordinate> holesCoords = new List<Coordinate>();
                         //List<Vertex> vertices = new Vertex[] { new Vertex(tri.V1.X, tri.V1.Y, tri.V1.Z), new Vertex(tri.V2.X, tri.V2.Y, tri.V2.Z), new Vertex(tri.V3.X, tri.V3.Y, tri.V3.Z) }.ToList();
