@@ -18,7 +18,7 @@ namespace Vr_Gl
             //GL.Enable(EnableCap.Texture2D);
 
             //GL.BindTexture(TextureTarget.ProxyTexture2D, Texture);
-            Texture = AssetsLoader.LoadTexture(@"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Base.bmp");
+            Texture = AssetsLoader.LoadTexture(Resources.Wood);
             Material = CustomMaterial.Chrome;
         }
 

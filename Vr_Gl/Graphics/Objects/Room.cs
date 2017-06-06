@@ -21,7 +21,7 @@ namespace Vr_Gl
 
              //GL.BindTexture(TextureTarget.ProxyTexture2D, Texture);
 
-             Texture = AssetsLoader.LoadTexture(@"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Back1.bmp");
+             Texture = AssetsLoader.LoadTexture(Resources.Room);
              Material = CustomMaterial.Ruby;
          }
          public override void Draw()
