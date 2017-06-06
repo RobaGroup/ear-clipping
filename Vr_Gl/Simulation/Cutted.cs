@@ -374,17 +374,6 @@ namespace Vr_Gl.Simulation
             }
         }
 
-        private void sort(Vector3 v1, Vector3 v2)
-        {
-            CounterClockwiseComp comp = new CounterClockwiseComp((v2 - v1) / 2);
-            if(comp.Compare(v1, v2) != 1)
-            {
-                v1 = v1 + v2;
-                v2 = v1 - v2;
-                v1 = v1 - v2;
-            }
-        }
-
         private class ClockwiseComp : IComparer<Vector3>
         {
             Vector3 Origin { get; set; }
