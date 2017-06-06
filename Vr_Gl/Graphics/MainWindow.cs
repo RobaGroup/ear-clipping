@@ -24,8 +24,8 @@ namespace Vr_Gl.Graphics
         public Cutter Cutter { get; set; }
         public Cutted Cutted { get; set; }
 
-        Counter Counter=new Counter();
-        Room Room=new Room();
+        private Counter Counter;
+        private Room Room;
         public MainWindow(string cutterFileName, string cuttedFileName)
         {
             Cutter = new Cutter(cutterFileName);
@@ -36,6 +36,8 @@ namespace Vr_Gl.Graphics
         {
             Cutter = new Cutter(cutterTris, @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Back1.bmp");
             Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5), @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Base.bmp");
+            Room=new Room();
+            Counter=new Counter();
         }
         protected override void OnLoad(EventArgs e)
         {
@@ -62,10 +64,15 @@ namespace Vr_Gl.Graphics
                 Cutter.Move(move);
                 Cutted.Update();
             }
+
             //Cutter.Draw(new Triangulation.Vector3(1, 1, 1));
             Cutter.Draw();
             //Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
             Cutted.Draw();
+           
+            Counter.Draw();
+            Room.Draw();
+
             SwapBuffers();
             clicked = false;
             move = new Triangulation.Vector3(0, 0, 0);
