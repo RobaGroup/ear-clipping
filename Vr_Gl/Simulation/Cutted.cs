@@ -79,15 +79,16 @@ namespace Vr_Gl.Simulation
                             temp.Add(result[j].Item1.V2);
                             var cutterTri = result[j].Item2;
                             var cuttedTri = tri;
+                            //sort(result[j].Item1.V1, result[j].Item1.V2);
                             Vector3 directed_seg = result[j].Item1.V2 - result[j].Item1.V1;
-                            tri.ComputePlane();
-                            Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
+                            //tri.ComputePlane();
+                            Vector3 inside_dir = tri.Normal();
                             List<int> inn = new List<int>();
-                            if ((cutterTri.V1 - result[j].Item1.V1).Dot(inside_dir) >= 0)
+                            if ((result[j].Item1.V1 - cutterTri.V1).Dot(inside_dir) >= 0)
                                 inn.Add(0);
-                            if ((cutterTri.V2 - result[j].Item1.V1).Dot(inside_dir) >= 0)
+                            if ((result[j].Item1.V1 - cutterTri.V2).Dot(inside_dir) >= 0)
                                 inn.Add(1);
-                            if ((cutterTri.V3 - result[j].Item1.V1).Dot(inside_dir) >= 0)
+                            if ((result[j].Item1.V1 - cutterTri.V3).Dot(inside_dir) >= 0)
                                 inn.Add(2);
                             insides.Add(inn);
 
@@ -104,8 +105,7 @@ namespace Vr_Gl.Simulation
                             //insides.Add(inn);
 
                             //Vector3 directed_seg = result[j].Item1.V1 - result[j].Item1.V2;
-                            //tri.ComputePlane();
-                            //Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
+                            //Vector3 inside_dir = tri.Normal().Cross(directed_seg);
                             //List<int> inn = new List<int>();
                             //if ((cutterTri.V1 - result[j].Item1.V2).Dot(inside_dir) >= 0)
                             //    inn.Add(0);
@@ -371,6 +371,17 @@ namespace Vr_Gl.Simulation
                 GL.TexCoord2(0.5, 0.5);
                 GL.Vertex3(tri.V3.Data());
                 GL.End();
+            }
+        }
+
+        private void sort(Vector3 v1, Vector3 v2)
+        {
+            CounterClockwiseComp comp = new CounterClockwiseComp((v2 - v1) / 2);
+            if(comp.Compare(v1, v2) != 1)
+            {
+                v1 = v1 + v2;
+                v2 = v1 - v2;
+                v1 = v1 - v2;
             }
         }
 

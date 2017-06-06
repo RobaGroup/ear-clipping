@@ -12,9 +12,9 @@ namespace Intersection
     {
         public Vector3 O { set; get; }
 
-        public Vector3 N { get; }
+        public Vector3 N { private set; get; }
 
-        public double d { get; }
+        public double d { private set; get; }
 
         public Plane(Vector3 n, double d)
         {

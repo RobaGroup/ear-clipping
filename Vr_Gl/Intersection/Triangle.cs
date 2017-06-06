@@ -226,7 +226,7 @@ namespace Intersection
 
         public override string ToString()
         {
-            return $"V1 = {V1.ToString()}, V2 = {V2.ToString()}, V3 = {V3.ToString()}";
+            return "";//$"V1 = {V1.ToString()}, V2 = {V2.ToString()}, V3 = {V3.ToString()}";
         }
 
         public bool Inside(Vector3 point)
