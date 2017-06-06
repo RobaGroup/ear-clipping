@@ -10,6 +10,8 @@ using Vr_Gl.Model;
 using Vr_Gl.Graphics;
 using GeoAPI.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
+using NetTopologySuite.Geometries.Utilities;
+using NetTopologySuite.Operation.Polygonize;
 
 namespace Vr_Gl.Simulation
 {
@@ -79,10 +81,8 @@ namespace Vr_Gl.Simulation
                         {
                             var cutterTri = result[j].Item2;
                             var cuttedTri = tri;
-                            //sort(result[j].Item1.V1, result[j].Item1.V2);
                             Vector3 directed_seg = result[j].Item1.V2 - result[j].Item1.V1;
-                            //tri.ComputePlane();
-                            Vector3 inside_dir = tri.Normal();
+                            Vector3 inside_dir = cutterTri.Normal().Normalized().Cross(directed_seg);
                             List<int> inn = new List<int>();
                             if ((result[j].Item1.V1 - cutterTri.V1).Dot(inside_dir) >= 0)
                                 inn.Add(0);
@@ -91,29 +91,6 @@ namespace Vr_Gl.Simulation
                             if ((result[j].Item1.V1 - cutterTri.V3).Dot(inside_dir) >= 0)
                                 inn.Add(2);
                             insides.Add(inn);
-
-                            //Vector3 directed_seg = result[j].Item1.V2 - result[j].Item1.V1;
-                            //tri.ComputePlane();
-                            //Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
-                            //List<int> inn = new List<int>();
-                            //if ((cutterTri.V1 - result[j].Item1.V1).Dot(inside_dir) < 0)
-                            //    inn.Add(0);
-                            //if ((cutterTri.V2 - result[j].Item1.V1).Dot(inside_dir) < 0)
-                            //    inn.Add(1);
-                            //if ((cutterTri.V3 - result[j].Item1.V1).Dot(inside_dir) < 0)
-                            //    inn.Add(2);
-                            //insides.Add(inn);
-
-                            //Vector3 directed_seg = result[j].Item1.V1 - result[j].Item1.V2;
-                            //Vector3 inside_dir = tri.Normal().Cross(directed_seg);
-                            //List<int> inn = new List<int>();
-                            //if ((cutterTri.V1 - result[j].Item1.V2).Dot(inside_dir) >= 0)
-                            //    inn.Add(0);
-                            //if ((cutterTri.V2 - result[j].Item1.V2).Dot(inside_dir) >= 0)
-                            //    inn.Add(1);
-                            //if ((cutterTri.V3 - result[j].Item1.V2).Dot(inside_dir) >= 0)
-                            //    inn.Add(2);
-                            //insides.Add(inn);
                         }
                         else
                         {
@@ -125,75 +102,53 @@ namespace Vr_Gl.Simulation
                         tris.Add(new Triangle(tri));
                         continue;
                     }
-                    for (int k = 0; k < insides.Count; ++k)
-                    {
-                        Console.WriteLine(insides[k].Count);
-                        var first = temp[2 * k];
-                        var second = temp[2 * k + 1];
-                        if (insides[k].Count == 1)
-                        {
-                            tris.Add(new Triangle(first, second, result[k].Item2[insides[k][0]]));
-                        }
-                        else
-                        {
-                            var third = result[k].Item2[insides[k][0]];
-                            var fourt = result[k].Item2[insides[k][1]];
-                            tris.Add(new Triangle(second, third, fourt));
-                            tris.Add(new Triangle(first, second, fourt));
-                        }
-                    }
+                    //for (int k = 0; k < insides.Count; ++k)
+                    //{
+                    //    Console.WriteLine(insides[k].Count);
+                    //    var first = temp[2 * k];
+                    //    var second = temp[2 * k + 1];
+                    //    if (insides[k].Count == 1)
+                    //    {
+                    //        tris.Add(new Triangle(first, second, result[k].Item2[insides[k][0]]));
+                    //    }
+                    //    else
+                    //    {
+                    //        var third = result[k].Item2[insides[k][0]];
+                    //        var fourt = result[k].Item2[insides[k][1]];
+                    //        tris.Add(new Triangle(second, third, fourt));
+                    //        tris.Add(new Triangle(first, second, fourt));
+                    //    }
+                    //}
                     temp = temp.Distinct().ToList();
+                    Console.WriteLine(anyOutside);
                     if (anyOutside)
                     {
-                        NetTopologySuite.Geometries.LinearRing ring = new NetTopologySuite.Geometries.LinearRing(new Coordinate[] { new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z), new Coordinate(tri.V2.X, tri.V2.Y, tri.V2.Z), new Coordinate(tri.V3.X, tri.V3.Y, tri.V3.Z), new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z) });
+                        var ring = new NetTopologySuite.Geometries.LinearRing(new Coordinate[] { new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z), new Coordinate(tri.V2.X, tri.V2.Y, tri.V2.Z), new Coordinate(tri.V3.X, tri.V3.Y, tri.V3.Z), new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z) });
                         List<Coordinate> holesCoords = new List<Coordinate>();
                         List<Vertex> vertices = new Vertex[] { new Vertex(tri.V1.X, tri.V1.Y, tri.V1.Z), new Vertex(tri.V2.X, tri.V2.Y, tri.V2.Z), new Vertex(tri.V3.X, tri.V3.Y, tri.V3.Z) }.ToList();
-                        //foreach (var item in temp)
-                        //{
-                        //    holesCoords.Add(new Coordinate(item.X, item.Y, item.Z));
-                        //}
-                        List<NetTopologySuite.Triangulate.Segment> segments = new List<NetTopologySuite.Triangulate.Segment>();
-                        List<Vertex> holesVertices = new List<Vertex>();
-                        for (int v = 0; v < temp.Count - 1; v += 2)
+                        foreach (var item in temp)
                         {
-                            holesVertices.Add(new NetTopologySuite.Triangulate.ConstraintVertex(new Coordinate(temp[v].X, temp[v].Y, temp[v].Z)));
-                            holesVertices.Add(new NetTopologySuite.Triangulate.ConstraintVertex(new Coordinate(temp[v + 1].X, temp[v + 1].Y, temp[v + 1].Z)));
-                            segments.Add(new NetTopologySuite.Triangulate.Segment(temp[v].X, temp[v].Y, temp[v].Z, temp[v + 1].X, temp[v + 1].Y, temp[v + 1].Z));
+                            holesCoords.Add(new Coordinate(item.X, item.Y, item.Z));
                         }
-                        //holesCoords.Add(new Coordinate(temp[0].X, temp[0].Y, temp[0].Z));
-                        //var holesRing = new NetTopologySuite.Geometries.LinearRing(holesCoords.ToArray());
-                        NetTopologySuite.Triangulate.ConformingDelaunayTriangulator triss = new NetTopologySuite.Triangulate.ConformingDelaunayTriangulator(vertices, 0.0001);
-                        //triss.SetConstraints(segments, holesVertices);
-                        triss.SetConstraints(segments, holesVertices);
-                        triss.FormInitialDelaunay();
-                        triss.EnforceConstraints();
-                        var ttt = triss.Subdivision.GetTriangles(NetTopologySuite.Geometries.Geometry.DefaultFactory);
-                        foreach (var tttt in ttt)
+                        holesCoords.Add(new Coordinate(temp[0].X, temp[0].Y, temp[0].Z));
+                        var holesRing = new NetTopologySuite.Geometries.LinearRing(holesCoords.ToArray());
+                        NetTopologySuite.Geometries.Polygon triPolygon = new NetTopologySuite.Geometries.Polygon(ring);
+                        NetTopologySuite.Geometries.Polygon holePolygon = new NetTopologySuite.Geometries.Polygon(holesRing);
+                        var cut = ClipPolygon(triPolygon, holePolygon);
+                        Console.WriteLine(cut.IsEmpty);
+                        var cuttt = cut as IGeometryCollection;
+                        foreach(var cutt in cuttt)
                         {
-                            tris.Add(new Triangle(tttt.Coordinates.Select(x => new Vector3(x.X, x.Y, x.Z)).ToList()));
+                            NetTopologySuite.Triangulate.DelaunayTriangulationBuilder builder = new NetTopologySuite.Triangulate.DelaunayTriangulationBuilder();
+                            builder.Tolerance = 0.0001;
+                            builder.SetSites(cut);
+                            var ress = builder.GetSubdivision().GetTriangles(NetTopologySuite.Geometries.Geometry.DefaultFactory);
+                            foreach (var item in ress)
+                            {
+                                if (!item.IsEmpty)
+                                    tris.Add(new Triangle(ress.Coordinates.Select(x => new Vector3(x.X, x.Y, x.Z)).ToList()));
+                            }
                         }
-                        //NetTopologySuite.Geometries.Polygon triPolygon = new NetTopologySuite.Geometries.Polygon(ring, new ILinearRing[] { holesRing});
-                        //NetTopologySuite.Triangulate.DelaunayTriangulationBuilder bu = new NetTopologySuite.Triangulate.DelaunayTriangulationBuilder();
-                        //bu.SetSites(triPolygon);
-                        //var triis = bu.GetTriangles(NetTopologySuite.Geometries.Geometry.DefaultFactory);
-                        //foreach (var item1 in triis)
-                        //{
-                        //    var pos = item1.Coordinates.Select(x => new Vector3(x.X, x.Y, x.Z)).ToList();
-                        //    tris.Add(new Triangle(pos));
-                        //}
-                        //NetTopologySuite.Geometries.Polygon holePolygon = new NetTopologySuite.Geometries.Polygon(holesRing);
-                        //var cut = triPolygon.Difference(holePolygon);
-                        //foreach (var item in cut)
-                        //{
-                        //    NetTopologySuite.Triangulate.DelaunayTriangulationBuilder bu = new NetTopologySuite.Triangulate.DelaunayTriangulationBuilder();
-                        //    bu.SetSites(item);
-                        //    var triis = bu.GetTriangles(NetTopologySuite.Geometries.Geometry.DefaultFactory);
-                        //    foreach (var item1 in triis)
-                        //    {
-                        //        var pos = item1.Coordinates.Select(x => new Vector3(x.X, x.Y, x.Z)).ToList();
-                        //        tris.Add(new Triangle(pos));
-                        //    }
-                        //}
                         continue;
                     }
                     //if (allOutside)
@@ -313,7 +268,6 @@ namespace Vr_Gl.Simulation
                 }
                 else
                 {
-                    //tris.Add(tri);
                     tris.Add(new Triangle(tri));
                 }
             }
@@ -490,6 +444,81 @@ namespace Vr_Gl.Simulation
                 }
             }
             throw new Exception("Holy shit");
+        }
+        internal static IGeometry ClipPolygon(IGeometry polygon, IPolygonal clipPolygonal)
+        {
+            var clipPolygon = (IGeometry)clipPolygonal;
+            var nodedLinework = polygon.Boundary.Union(clipPolygon.Boundary);
+            var polygons = Polygonize(nodedLinework);
+
+            /*
+            // Build a prepared clipPolygon
+            var prepClipPolygon = NetTopologySuite.Geometries.Prepared.PreparedGeometryFactory.Prepare(clipPolygon);
+                */
+
+            // only keep polygons which are inside the input
+            var output = new List<IGeometry>();
+            for (var i = 0; i < polygons.NumGeometries; i++)
+            {
+                var candpoly = (IPolygon)polygons.GetGeometryN(i);
+                var interiorPoint = candpoly.InteriorPoint;
+                if (polygon.Contains(interiorPoint) &&
+                    /*prepClipPolygon.Contains(candpoly)*/
+                    clipPolygon.Contains(interiorPoint))
+                    output.Add(candpoly);
+            }
+            /*
+            return polygon.Factory.CreateGeometryCollection(
+                GeometryFactory.ToGeometryArray(output));
+                */
+            Console.WriteLine(output.Count);
+            return polygon.Factory.BuildGeometry(output);
+        }
+
+        internal static IGeometry Polygonize(IGeometry geometry)
+        {
+            var lines = LineStringExtracter.GetLines(geometry);
+            var polygonizer = new Polygonizer();
+            polygonizer.Add(lines);
+            var polys = polygonizer.GetPolygons();
+            var polyArray = NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(polys);
+            return geometry.Factory.CreateGeometryCollection(polyArray);
+        }
+
+        internal static IGeometry PolygonizeForClip(IGeometry geometry, GeoAPI.Geometries.Prepared.IPreparedGeometry clip)
+        {
+            var lines = LineStringExtracter.GetLines(geometry);
+            var clippedLines = new List<IGeometry>();
+            foreach (ILineString line in lines)
+            {
+                if (clip.Contains(line))
+                    clippedLines.Add(line);
+            }
+            var polygonizer = new Polygonizer();
+            polygonizer.Add(clippedLines);
+            var polys = polygonizer.GetPolygons();
+            var polyArray = NetTopologySuite.Geometries.GeometryFactory.ToGeometryArray(polys);
+            return geometry.Factory.CreateGeometryCollection(polyArray);
+        }
+
+        internal static IGeometry SplitPolygon(IGeometry polygon, IGeometry line)
+        {
+            var nodedLinework = polygon.Boundary.Union(line);
+            var polygons = Polygonize(nodedLinework);
+
+            // only keep polygons which are inside the input
+            var output = new List<IGeometry>();
+            for (var i = 0; i < polygons.NumGeometries; i++)
+            {
+                var candpoly = (IPolygon)polygons.GetGeometryN(i);
+                if (polygon.Contains(candpoly.InteriorPoint))
+                    output.Add(candpoly);
+            }
+            /*
+            return polygon.Factory.CreateGeometryCollection(
+                GeometryFactory.ToGeometryArray(output));
+             */
+            return polygon.Factory.BuildGeometry(output);
         }
     }
 }
