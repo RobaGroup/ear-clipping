@@ -77,15 +77,16 @@ namespace Vr_Gl.Simulation
                         {
                             temp.Add(result[j].Item1.V1);
                             temp.Add(result[j].Item1.V2);
-                            Vector3 directed_seg = result[j].Item2.V2 - result[j].Item2.V1;
+                            var cutterTri = result[j].Item2;
+                            Vector3 directed_seg = cutterTri.V2 - cutterTri.V1;
                             tri.ComputePlane();
                             Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
                             List<int> inn = new List<int>();
-                            if ((tri.V1 - result[j].Item2.V1).Dot(inside_dir) >= 0)
+                            if ((cutterTri.V1 - result[j].Item2.V1).Dot(inside_dir) >= 0)
                                 inn.Add(0);
-                            if ((tri.V2 - result[j].Item2.V1).Dot(inside_dir) >= 0)
+                            if ((cutterTri.V2 - result[j].Item2.V1).Dot(inside_dir) >= 0)
                                 inn.Add(1);
-                            if ((tri.V3 - result[j].Item2.V1).Dot(inside_dir) >= 0)
+                            if ((cutterTri.V3 - result[j].Item2.V1).Dot(inside_dir) >= 0)
                                 inn.Add(2);
                             insides.Add(inn);
                         }
@@ -95,9 +96,9 @@ namespace Vr_Gl.Simulation
                         tris.Add(new Triangle(tri));
                         continue;
                     }
-                    Func<int, int, Vector3> select = (ff, vv) => result[ff].Item2[vv];
                     for (int k = 0; k < insides.Count; ++k)
                     {
+                        Console.WriteLine(insides[k].Count);
                         var first = temp[2 * k];
                         var second = temp[2 * k + 1];
                         if (insides[k].Count == 1)
@@ -108,8 +109,8 @@ namespace Vr_Gl.Simulation
                         {
                             var third = result[k].Item2[insides[k][0]];
                             var fourt = result[k].Item2[insides[k][1]];
-                            tris.Add(new Triangle(first, second, third));
-                            tris.Add(new Triangle(first, third, fourt));
+                            tris.Add(new Triangle(second, third, fourt));
+                            tris.Add(new Triangle(first, second, fourt));
                         }
                     }
                     temp = temp.Distinct().ToList();
