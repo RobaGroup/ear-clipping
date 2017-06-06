@@ -68,16 +68,17 @@ namespace Vr_Gl.Simulation
                 if (result.Count >= 2)
                 {
                     List<List<Vector3>> holes = new List<List<Vector3>>();
-                    ISet<Vector3> t = new HashSet<Vector3>();
+                    List<Vector3> temp = new List<Vector3>();
                     List<List<int>> insides = new List<List<int>>();
                     bool anyOutside = false;
                     for (int j = 0; j < result.Count; j++)
                     {
                         if (tri.Inside(result[j].Item1.V1) && tri.Inside(result[j].Item1.V2))
                         {
-                            t.Add(result[j].Item1.V1);
-                            t.Add(result[j].Item1.V2);
+                            temp.Add(result[j].Item1.V1);
+                            temp.Add(result[j].Item1.V2);
                             Vector3 directed_seg = result[j].Item2.V2 - result[j].Item2.V1;
+                            tri.ComputePlane();
                             Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
                             List<int> inn = new List<int>();
                             if ((tri.V1 - result[j].Item2.V1).Dot(inside_dir) >= 0)
@@ -89,20 +90,29 @@ namespace Vr_Gl.Simulation
                             insides.Add(inn);
                         }
                     }
-                    if (t.Count <= 2)
+                    if (temp.Count <= 2)
                     {
                         tris.Add(new Triangle(tri));
                         continue;
                     }
-                    var temp = t.ToList();
                     Func<int, int, Vector3> select = (ff, vv) => result[ff].Item2[vv];
                     for (int k = 0; k < insides.Count; ++k)
                     {
-                        if (insides[i].Count == 1)
+                        var first = temp[2 * k];
+                        var second = temp[2 * k + 1];
+                        if (insides[k].Count == 1)
                         {
-
+                            tris.Add(new Triangle(first, second, select(k, insides[k][0])));
+                        }
+                        else
+                        {
+                            var third = select(k, insides[k][0]);
+                            var fourt = select(k, insides[k][1]);
+                            tris.Add(new Triangle(first, second, third));
+                            tris.Add(new Triangle(first, third, fourt));
                         }
                     }
+                    temp = temp.Distinct().ToList();
                     if (anyOutside)
                     {
                         NetTopologySuite.Geometries.LinearRing ring = new NetTopologySuite.Geometries.LinearRing(new Coordinate[] { new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z), new Coordinate(tri.V2.X, tri.V2.Y, tri.V2.Z), new Coordinate(tri.V3.X, tri.V3.Y, tri.V3.Z), new Coordinate(tri.V1.X, tri.V1.Y, tri.V1.Z) });
