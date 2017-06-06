@@ -12,24 +12,7 @@ namespace Vr_Gl
     {
         protected int Texture;
         protected Material Material;
-        protected Vector3[] Vertdata = new Vector3[] { new Vector3(-1f, -1f,  -1f),
-                new Vector3(-1f, -1f,  1f),
-                new Vector3(1f, -1f,  1f),
-                new Vector3(1f, 1f,  1f),
-                new Vector3(-1f, 1f,  1f),
 
-                
-                new Vector3(-1f, -1f,  -1f),
-                new Vector3(-1f, 1f,  -1f),
-
-                new Vector3(1f, -1f,  -1f),
-                new Vector3(1f, 1f,  -1f),
-                new Vector3(-1f, 1f,  -1f),
-                new Vector3(-1f, -1f,  1f),
-                new Vector3(1f, -1f,  1f),
-                new Vector3(1f, 1f,  1f),
-                new Vector3(-1f, 1f,  1f)
-            };
 
         public abstract void Draw()
 

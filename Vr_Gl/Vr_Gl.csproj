@@ -65,7 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DrawingObject.cs" />
+    <Compile Include="Graphics\Objects\Counter.cs" />
+    <Compile Include="Graphics\Objects\DrawingObject.cs" />
     <Compile Include="Graphics\AssetsLoader.cs" />
     <Compile Include="Graphics\MainWindow.cs" />
     <Compile Include="Intersection\approximation\BiArcFit2.cs" />
@@ -276,6 +277,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Graphics\Objects\Room.cs" />
     <Compile Include="Simulation\Cutted.cs" />
     <Compile Include="Simulation\Cutter.cs" />
     <Compile Include="Test.cs" />
@@ -291,7 +293,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Graphics\Objects\OpenTK.dll.config" />
+    <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
