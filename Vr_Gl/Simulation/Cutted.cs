@@ -73,10 +73,10 @@ namespace Vr_Gl.Simulation
                     bool anyOutside = false;
                     for (int j = 0; j < result.Count; j++)
                     {
+                        temp.Add(result[j].Item1.V1);
+                        temp.Add(result[j].Item1.V2);
                         if (tri.Inside(result[j].Item1.V1) && tri.Inside(result[j].Item1.V2))
                         {
-                            temp.Add(result[j].Item1.V1);
-                            temp.Add(result[j].Item1.V2);
                             var cutterTri = result[j].Item2;
                             var cuttedTri = tri;
                             //sort(result[j].Item1.V1, result[j].Item1.V2);
@@ -115,6 +115,10 @@ namespace Vr_Gl.Simulation
                             //    inn.Add(2);
                             //insides.Add(inn);
                         }
+                        else
+                        {
+                            anyOutside = true;
+                        }
                     }
                     if (temp.Count <= 2)
                     {
@@ -152,8 +156,8 @@ namespace Vr_Gl.Simulation
                         List<Vertex> holesVertices = new List<Vertex>();
                         for (int v = 0; v < temp.Count - 1; v += 2)
                         {
-                            holesVertices.Add(new Vertex(temp[v].X, temp[v].Y, temp[v].Z));
-                            holesVertices.Add(new Vertex(temp[v + 1].X, temp[v + 1].Y, temp[v + 1].Z));
+                            holesVertices.Add(new NetTopologySuite.Triangulate.ConstraintVertex(new Coordinate(temp[v].X, temp[v].Y, temp[v].Z)));
+                            holesVertices.Add(new NetTopologySuite.Triangulate.ConstraintVertex(new Coordinate(temp[v + 1].X, temp[v + 1].Y, temp[v + 1].Z)));
                             segments.Add(new NetTopologySuite.Triangulate.Segment(temp[v].X, temp[v].Y, temp[v].Z, temp[v + 1].X, temp[v + 1].Y, temp[v + 1].Z));
                         }
                         //holesCoords.Add(new Coordinate(temp[0].X, temp[0].Y, temp[0].Z));
