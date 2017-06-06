@@ -206,6 +206,11 @@ namespace Triangulation
             return new double[] { X, Y, Z };
         }
 
+        internal bool IsMostlyZero()
+        {
+            return X <= 0.01 && Y <= 0.01 && Z <= 0.01;
+        }
+
         public bool Equals(Vector3 other)
         {
             if (other == null)
