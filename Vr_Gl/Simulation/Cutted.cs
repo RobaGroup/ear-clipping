@@ -78,15 +78,16 @@ namespace Vr_Gl.Simulation
                             temp.Add(result[j].Item1.V1);
                             temp.Add(result[j].Item1.V2);
                             var cutterTri = result[j].Item2;
+                            var cuttedTri = tri;
                             Vector3 directed_seg = cutterTri.V2 - cutterTri.V1;
                             tri.ComputePlane();
                             Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
                             List<int> inn = new List<int>();
-                            if ((cutterTri.V1 - cutterTri.V1).Dot(inside_dir) >= 0)
+                            if ((cuttedTri.V1 - cutterTri.V1).Dot(inside_dir) >= 0)
                                 inn.Add(0);
-                            if ((cutterTri.V2 - cutterTri.V1).Dot(inside_dir) >= 0)
+                            if ((cuttedTri.V2 - cutterTri.V1).Dot(inside_dir) >= 0)
                                 inn.Add(1);
-                            if ((cutterTri.V3 - cutterTri.V1).Dot(inside_dir) >= 0)
+                            if ((cuttedTri.V3 - cutterTri.V1).Dot(inside_dir) >= 0)
                                 inn.Add(2);
                             insides.Add(inn);
                         }
