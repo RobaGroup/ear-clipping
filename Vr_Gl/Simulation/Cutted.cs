@@ -82,11 +82,11 @@ namespace Vr_Gl.Simulation
                             Vector3 inside_dir = tri.plane.N.Cross(directed_seg);
                             List<int> inn = new List<int>();
                             if ((tri.V1 - result[j].Item2.V1).Dot(inside_dir) >= 0)
-                                inn.Add(1);
+                                inn.Add(0);
                             if ((tri.V2 - result[j].Item2.V1).Dot(inside_dir) >= 0)
-                                inn.Add(2);
+                                inn.Add(1);
                             if ((tri.V3 - result[j].Item2.V1).Dot(inside_dir) >= 0)
-                                inn.Add(3);
+                                inn.Add(2);
                             insides.Add(inn);
                         }
                     }
@@ -102,12 +102,12 @@ namespace Vr_Gl.Simulation
                         var second = temp[2 * k + 1];
                         if (insides[k].Count == 1)
                         {
-                            tris.Add(new Triangle(first, second, select(k, insides[k][0])));
+                            tris.Add(new Triangle(first, second, result[k].Item2[insides[k][0]]));
                         }
                         else
                         {
-                            var third = select(k, insides[k][0]);
-                            var fourt = select(k, insides[k][1]);
+                            var third = result[k].Item2[insides[k][0]];
+                            var fourt = result[k].Item2[insides[k][1]];
                             tris.Add(new Triangle(first, second, third));
                             tris.Add(new Triangle(first, third, fourt));
                         }
