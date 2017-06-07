@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 using Tree;
@@ -41,7 +42,18 @@ namespace Vr_Gl.Simulation
             }
             this.Texture = AssetsLoader.LoadTexture(texturePath);
         }
-
+//Overload
+        public Cutter(List<Triangle> tris, Bitmap Bitmap )
+        {
+            _normals = new List<Vector3>();
+            Tree = new AabbTree(tris);
+            foreach (var tri in tris)
+            {
+                var normal = (tri.V1 - tri.V2).Cross(tri.V1 - tri.V3).Normalized();
+                _normals.Add(normal);
+            }
+            this.Texture = AssetsLoader.LoadTexture(Bitmap);
+        }
 
         public void Reset()
         {

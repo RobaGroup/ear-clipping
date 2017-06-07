@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
 using Triangulation;
 using OpenTK.Graphics.OpenGL;
 using Vr_Gl.Model;
 using Vr_Gl.Graphics;
+using Vr_Gl.Properties;
 using GeoAPI.Geometries;
 using NetTopologySuite.Triangulate.QuadEdge;
 using NetTopologySuite.Geometries.Utilities;
@@ -39,6 +41,13 @@ namespace Vr_Gl.Simulation
         {
             this.Move(initialPos);
             this.Texture = AssetsLoader.LoadTexture(texturePath);
+        }
+
+//overload with imag 
+    public Cutted(List<Triangle> tris, Cutter cutter, Vector3 initialPos, Bitmap bitmap ) : this(tris, cutter)
+        {
+            this.Move(initialPos);
+            this.Texture = Vr_Gl.Graphics.AssetsLoader.LoadTexture(bitmap);
         }
 
         public Cutted(string fileName, Cutter cutter, Vector3 initialPos, string texturePath = "D:/cutted.jpg") : this(fileName, cutter)

@@ -35,8 +35,8 @@ namespace Vr_Gl.Graphics
 
         public MainWindow(List<Triangle> cutterTris, List<Triangle> cuttedTris)
         {
-            Cutter = new Cutter(cutterTris, @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Metal3.bmp");
-            Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5), @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Base.bmp");
+            Cutter = new Cutter(cutterTris, Resources.Metal3);
+            Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5),Resources.Wood);
             _room=new Room();
             _table=new Table();
             _light=new Light();
