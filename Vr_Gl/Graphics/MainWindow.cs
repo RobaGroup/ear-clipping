@@ -33,6 +33,13 @@ namespace Vr_Gl.Graphics
             Cutter = new Cutter(cutterTris);
             Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5));
         }
+
+        public MainWindow(Cutter cutter, Cutted cutted)
+        {
+            this.Cutter = cutter;
+            this.Cutted = cutted;
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
