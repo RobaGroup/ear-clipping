@@ -27,6 +27,13 @@ namespace Vr_Gl.Graphics
         private Table _table;
         private Room _room;
         private Light _light;
+        
+        public MainWindow(Cutter cutter, Cutted cutted)
+        {
+            this.Cutter = cutter;
+            this.Cutted = cutted;
+        }
+        
         public MainWindow(string cutterFileName, string cuttedFileName)
         {
             Cutter = new Cutter(cutterFileName);
