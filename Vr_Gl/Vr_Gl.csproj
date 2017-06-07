@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\CustomMaterials.cs" />
     <Compile Include="Graphics\Light.cs" />
