@@ -65,7 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\CustomMaterials.cs" />
+    <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Objects\Counter.cs" />
     <Compile Include="Graphics\Objects\DrawingObject.cs" />
     <Compile Include="Graphics\AssetsLoader.cs" />
@@ -308,6 +310,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Base.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Metal.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Metal2.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AssimpNet.3.3.2\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.3.3.2\build\AssimpNet.targets')" />

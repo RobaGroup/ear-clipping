@@ -15,7 +15,7 @@ using Vr_Gl.Properties;
 
 namespace Vr_Gl.Graphics
 {
-    class MainWindow : GameWindow
+    public class MainWindow : GameWindow
     {
         double x = 0, y = 0, z = 0;
         double rotx = 0, roty = 0, rotz = 0;
@@ -34,7 +34,7 @@ namespace Vr_Gl.Graphics
 
         public MainWindow(List<Triangle> cutterTris, List<Triangle> cuttedTris)
         {
-            Cutter = new Cutter(cutterTris, @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Back1.bmp");
+            Cutter = new Cutter(cutterTris, @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Metal3.bmp");
             Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5), @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Base.bmp");
             Room=new Room();
             Counter=new Counter();

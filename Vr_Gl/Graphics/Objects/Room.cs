@@ -26,8 +26,8 @@ namespace Vr_Gl
          }
          public override void Draw()
         {
-             GL.PushMatrix();
-            GL.Scale(8f, 8f, 8f);
+            GL.PushMatrix();
+            GL.Scale(10f, 8f,10f);
             GL.BindTexture(TextureTarget.Texture2D, Texture);
             GL.Begin(BeginMode.Quads);
             // Front Face
