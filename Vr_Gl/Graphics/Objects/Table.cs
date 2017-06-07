@@ -10,20 +10,21 @@ using Vr_Gl.Properties;
 
 namespace Vr_Gl
 {
-    class Counter :DrawingObject
+    class Table :DrawingObject
     {
-        public Counter()
+        public Table()
         {
             //Texture = VR_Project.Texture.GiveMeID(Resources.Wood);
             //GL.Enable(EnableCap.Texture2D);
 
             //GL.BindTexture(TextureTarget.ProxyTexture2D, Texture);
             Texture = AssetsLoader.LoadTexture(Resources.Metal4);
-            Material = CustomMaterial.Chrome;
+            Material = CustomMaterial.Bronze;
         }
 
         public override void Draw()
         {
+            //Material.Activate();
             GL.PushMatrix();
             GL.Translate(0,-6f,0);
             GL.Scale(4f, 1.8f,3f);

@@ -68,7 +68,7 @@
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\CustomMaterials.cs" />
     <Compile Include="Graphics\Light.cs" />
-    <Compile Include="Graphics\Objects\Counter.cs" />
+    <Compile Include="Graphics\Objects\Table.cs" />
     <Compile Include="Graphics\Objects\DrawingObject.cs" />
     <Compile Include="Graphics\AssetsLoader.cs" />
     <Compile Include="Graphics\MainWindow.cs" />

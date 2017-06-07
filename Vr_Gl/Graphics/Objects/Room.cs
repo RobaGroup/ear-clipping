@@ -25,7 +25,8 @@ namespace Vr_Gl
              Material = CustomMaterial.Ruby;
          }
          public override void Draw()
-        {
+         {
+             Material.Activate();
             GL.PushMatrix();
             GL.Scale(10f, 8f,10f);
             GL.BindTexture(TextureTarget.Texture2D, Texture);

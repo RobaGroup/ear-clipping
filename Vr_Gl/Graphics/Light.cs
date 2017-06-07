@@ -11,7 +11,7 @@ namespace Vr_Gl
     {
         float[] Ambient = { 0.45f, 0.45f, 0.45f, 1.0f };//{ 0.5f, 0.5f, 0.5f, 1.0f };
         float []Diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
-        float []Position = {1.0f, 1.0f, -0.5f};//{ 0.0f, 4.0f, 2.0f, 1.0f };//{ 0.0f, 0.0f, 2.0f, 1.0f };
+        float []Position = {0.0f, 9.0f, -0.5f};//{ 0.0f, 4.0f, 2.0f, 1.0f };//{ 0.0f, 0.0f, 2.0f, 1.0f };
 
         private bool state = true;
 
@@ -26,6 +26,7 @@ namespace Vr_Gl
             GL.LightModel(LightModelParameter.LightModelColorControl, new float[] { 0.2f, 0.2f, 0.2f, 1.0f });
             GL.LightModel(LightModelParameter.LightModelTwoSide, 1);
             GL.LightModel(LightModelParameter.LightModelLocalViewer, 1);
+            Activate();
 
         }
 
