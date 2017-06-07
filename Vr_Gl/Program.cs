@@ -27,6 +27,14 @@ namespace Vr_Gl
                 new Triangle(new Vector3(1, 0, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
                 new Triangle(new Vector3(0, 0.6, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5))
             }.ToList();
+            float x=.3f;float y=.13f;
+             List<Triangle> cutterTrisMini = new Triangle[]
+            {
+                new Triangle(new Vector3(0, 0, 0), new Vector3(x, 0, 0), new Vector3(y, y, -0.5)),
+                new Triangle(new Vector3(0, 0, 0), new Vector3(0, x, 0), new Vector3(y, y, -0.5)),
+                new Triangle(new Vector3(x, 0, 0), new Vector3(x, x, 0), new Vector3(y, y, -0.5)),
+                new Triangle(new Vector3(0, x, 0), new Vector3(x, x, 0), new Vector3(y, y, -0.5))
+            }.ToList();
             List<Triangle> cuttedTris = new Triangle[]
             {
                 new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 3, 0)),
@@ -38,7 +46,7 @@ namespace Vr_Gl
             }.ToList();
             //List<Triangle> cuttedTris = new Loader(100).Load(@"D:/zune.obj");
             Config.OnlyHoles = true;
-            using (MainWindow window = new MainWindow(cutterTris, cuttedTris))
+            using (MainWindow window = new MainWindow(cutterTrisMini, cuttedTris))
             {
                 window.Run(30);
             }
