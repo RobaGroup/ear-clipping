@@ -71,7 +71,7 @@ namespace Vr_Gl.Graphics
 
             _room.Draw();
             _table.Draw();
-            GL.Translate(2,-1,1);
+            GL.Translate(2,-1,2.5);
             GL.Rotate(-90,1,0,0);
 
             //_light.updatePosition();
