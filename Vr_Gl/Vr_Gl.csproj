@@ -324,6 +324,10 @@
   <ItemGroup>
     <None Include="Resources\Metal4.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\connection.png" />
+    <Content Include="Resources\WoodenFloor.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AssimpNet.3.3.2\build\AssimpNet.targets" Condition="Exists('..\packages\AssimpNet.3.3.2\build\AssimpNet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
