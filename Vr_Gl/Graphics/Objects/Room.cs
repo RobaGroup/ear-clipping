@@ -22,7 +22,8 @@ namespace Vr_Gl
              //GL.BindTexture(TextureTarget.ProxyTexture2D, Texture);
 
              Texture = AssetsLoader.LoadTexture(Resources.Room);
-             Material = CustomMaterial.Ruby;
+             Material = new Material(0.1745f, 0.01175f, 0.01175f, 0.61424f, 0.04136f, 0.04136f, 0.727811f,
+            0.626959f, 0.626959f, 0.6f);
          }
          public override void Draw()
          {

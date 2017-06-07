@@ -17,8 +17,8 @@ namespace Vr_Gl.Graphics
 {
     public class MainWindow : GameWindow
     {
-        double x = 0, y = 0, z = 0;
-        double rotx = 0, roty = 0, rotz = 0;
+        double x = 0, y = 0, z =-10;
+        double rotx = 60, roty = 0, rotz = 0;
         bool clicked = false;
         Triangulation.Vector3 move = new Triangulation.Vector3(0, 0, 0);
         public Cutter Cutter { get; set; }
@@ -66,12 +66,14 @@ namespace Vr_Gl.Graphics
                 Cutter.Move(move);
                 Cutted.Update();
             }
-            _light=new Light();
+            _light.Activate();
+            CustomMaterial.Ruby.Activate();
+            //_light.updatePosition();
             ////Cutter.Draw(new Triangulation.Vector3(1, 1, 1));
             //Cutter.Draw();
             ////Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
             //Cutted.Draw();
-           // _room.Draw();           
+            _room.Draw();
             _table.Draw();
            
 

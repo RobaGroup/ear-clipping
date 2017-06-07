@@ -35,13 +35,14 @@ namespace Vr_Gl
         {
             GL.Enable(EnableCap.ColorMaterial);
 		    float []ambient = { ambient_r, ambient_g, ambient_b, 1.0f };
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Ambient, ambient);
+            GL.GetMaterial(MaterialFace.FrontAndBack, MaterialParameter.Ambient, ambient);
 		    float []diffuse = { diffuse_r, diffuse_g, diffuse_b };
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, diffuse);
+            GL.GetMaterial(MaterialFace.FrontAndBack, MaterialParameter.Diffuse, diffuse);
 		    float []specular = { specular_r, specular_g, specular_b };
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Specular, specular);
+            GL.GetMaterial(MaterialFace.FrontAndBack, MaterialParameter.Specular, specular);
 		    float []shines = { shiness };
             GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Shininess, shines);
+            GL.Enable(EnableCap.Lighting);
 
 	    }
     }

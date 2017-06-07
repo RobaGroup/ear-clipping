@@ -24,7 +24,7 @@ namespace Vr_Gl
 
         public override void Draw()
         {
-            //Material.Activate();
+            Material.Activate();
             GL.PushMatrix();
             GL.Translate(0,-6f,0);
             GL.Scale(4f, 1.8f,3f);
