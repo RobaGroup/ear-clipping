@@ -19,14 +19,14 @@ namespace Vr_Gl
     {
         static void Main(string[] args)
         {
-            //List<Triangle> cutterTris = new Loader(10).Load(@"D:/pyramid.3ds");
-            List<Triangle> cutterTris = new Triangle[]
-            {
-                new Triangle(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0.3, 0.3, -0.5)),
-                new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
-                new Triangle(new Vector3(1, 0, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
-                new Triangle(new Vector3(0, 0.6, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
-            }.ToList();
+            List<Triangle> cutterTris = new Loader(10).Load(@"D:/pyramid.3ds");
+            //List<Triangle> cutterTris = new Triangle[]
+            //{
+            //    new Triangle(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0.3, 0.3, -0.5)),
+            //    new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
+            //    new Triangle(new Vector3(1, 0, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
+            //    new Triangle(new Vector3(0, 0.6, 0), new Vector3(1, 0.6, 0), new Vector3(0.3, 0.3, -0.5)),
+            //}.ToList();
             //List<Triangle> cuttedTris = new Triangle[]
             //{
             //    new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 3, 0))

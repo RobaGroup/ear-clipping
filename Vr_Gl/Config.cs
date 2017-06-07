@@ -9,6 +9,6 @@ namespace Vr_Gl
     public class Config
     {
         private Config() { }
-        public static bool OnlyHoles { get; set; } //= false;
+        public static bool OnlyHoles { get; set; } = false;
     }
 }
