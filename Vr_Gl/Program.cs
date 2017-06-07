@@ -30,11 +30,11 @@ namespace Vr_Gl
             List<Triangle> cuttedTris = new Triangle[]
             {
                 new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(1, 3, 0)),
-              new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0, -2), new Vector3(1, 3, -1)),
-                new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
-                new Triangle(new Vector3(0, 0, -2), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
-                new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(0, 0, -2)),
-                new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(0, 0, -2))
+              //new Triangle(new Vector3(0, 0, 0), new Vector3(0, 0, -2), new Vector3(1, 3, -1)),
+              //  new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
+              //  new Triangle(new Vector3(0, 0, -2), new Vector3(2, 0, -2), new Vector3(1, 3, -1)),
+              //  new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(0, 0, -2)),
+              //  new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(0, 0, -2))
             }.ToList();
             //List<Triangle> cuttedTris = new Loader(100).Load(@"D:/zune.obj");
             Config.OnlyHoles = true;
