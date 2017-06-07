@@ -27,7 +27,7 @@ namespace Vr_Gl
          }
          public override void Draw()
          {
-            // Material.Activate();
+             Material.Activate();
             GL.PushMatrix();
             GL.Scale(10f, 8f,10f);
             GL.BindTexture(TextureTarget.Texture2D, Texture);

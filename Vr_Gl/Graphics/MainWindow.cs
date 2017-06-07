@@ -68,16 +68,13 @@ namespace Vr_Gl.Graphics
             }
             _light.Activate();
             CustomMaterial.Ruby.Activate();
-            _room.Draw();
-            _table.Draw();
             //_light.updatePosition();
             ////Cutter.Draw(new Triangulation.Vector3(1, 1, 1));
-            /// 
-            GL.Translate(2,-2,0);
-            GL.Rotate(-90, 1, 0, 0);
-            Cutter.Draw();
+            //Cutter.Draw();
             ////Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
-            Cutted.Draw();
+            //Cutted.Draw();
+            _room.Draw();
+            _table.Draw();
            
 
             SwapBuffers();
