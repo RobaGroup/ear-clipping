@@ -18,7 +18,7 @@ namespace Vr_Gl
             //GL.Enable(EnableCap.Texture2D);
 
             //GL.BindTexture(TextureTarget.ProxyTexture2D, Texture);
-            Texture = AssetsLoader.LoadTexture(Resources.Wood);
+            Texture = AssetsLoader.LoadTexture(Resources.Metal4);
             Material = CustomMaterial.Chrome;
         }
 
@@ -26,7 +26,7 @@ namespace Vr_Gl
         {
             GL.PushMatrix();
             GL.Translate(0,-6f,0);
-            GL.Scale(4f, 2f,4f);
+            GL.Scale(4f, 1.8f,3f);
             GL.BindTexture(TextureTarget.Texture2D, Texture);
             GL.Begin(BeginMode.Quads);
             // Front Face

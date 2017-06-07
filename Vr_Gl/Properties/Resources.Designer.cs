@@ -83,6 +83,26 @@ namespace Vr_Gl.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Metal3 {
+            get {
+                object obj = ResourceManager.GetObject("Metal3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Metal4 {
+            get {
+                object obj = ResourceManager.GetObject("Metal4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Room {
             get {
                 object obj = ResourceManager.GetObject("Room", resourceCulture);

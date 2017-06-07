@@ -124,6 +124,12 @@
   <data name="Metal2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Metal2.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Metal3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Metal3.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Metal4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Metal4.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Room" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Back1.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

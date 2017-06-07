@@ -69,9 +69,9 @@ namespace Vr_Gl.Graphics
             Cutter.Draw();
             //Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
             Cutted.Draw();
-           
+            Room.Draw();           
             Counter.Draw();
-            Room.Draw();
+           
 
             SwapBuffers();
             clicked = false;
