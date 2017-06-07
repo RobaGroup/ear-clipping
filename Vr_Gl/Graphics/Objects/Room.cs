@@ -13,6 +13,7 @@ namespace Vr_Gl
 {
      class Room : DrawingObject
     {
+        int floor;
          public Room()
          {
 
@@ -24,6 +25,7 @@ namespace Vr_Gl
              Texture = AssetsLoader.LoadTexture(Resources.Room);
              Material = new Material(0.1745f, 0.01175f, 0.01175f, 0.61424f, 0.04136f, 0.04136f, 0.727811f,
             0.626959f, 0.626959f, 0.6f);
+             floor= AssetsLoader.LoadTexture(Resources.WoodenFloor);
          }
          public override void Draw()
          {
@@ -50,12 +52,6 @@ namespace Vr_Gl
             GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(-1.0f, 1.0f, 1.0f);
             GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(1.0f, 1.0f, 1.0f);
             GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(1.0f, 1.0f, -1.0f);
-            // Bottom Face
-            GL.Normal3(0.0f, -1.0f, 0.0f);
-            GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(-1.0f, -1.0f, -1.0f);
-            GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, -1.0f);
-            GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
-            GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
             // Right face
             GL.Normal3(1.0f, 0.0f, 0.0f);
             GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(1.0f, -1.0f, -1.0f);
@@ -68,6 +64,16 @@ namespace Vr_Gl
             GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
             GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(-1.0f, 1.0f, 1.0f);
             GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(-1.0f, 1.0f, -1.0f);
+            GL.End();
+
+            GL.BindTexture(TextureTarget.Texture2D, floor);
+            GL.Begin(BeginMode.Quads);
+                        // Bottom Face
+            GL.Normal3(0.0f, -1.0f, 0.0f);
+            GL.TexCoord2(1.0f, 1.0f); GL.Vertex3(-1.0f, -1.0f, -1.0f);
+            GL.TexCoord2(0.0f, 1.0f); GL.Vertex3(1.0f, -1.0f, -1.0f);
+            GL.TexCoord2(0.0f, 0.0f); GL.Vertex3(1.0f, -1.0f, 1.0f);
+            GL.TexCoord2(1.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, 1.0f);
             GL.End();
              GL.PopMatrix();
             // GL.ActiveTexture(TextureUnit.Texture0);

@@ -119,5 +119,15 @@ namespace Vr_Gl.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WoodenFloor {
+            get {
+                object obj = ResourceManager.GetObject("WoodenFloor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }        
     }
 }
