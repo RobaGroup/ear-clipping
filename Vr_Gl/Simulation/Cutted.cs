@@ -124,12 +124,16 @@ namespace Vr_Gl.Simulation
                             {
                                 tris.Add(new Triangle(first, second, result[k].Item2[insides[k][0]]));
                             }
-                            else
+                            else if(insides[k].Count == 2)
                             {
                                 var third = result[k].Item2[insides[k][0]];
                                 var fourt = result[k].Item2[insides[k][1]];
                                 tris.Add(new Triangle(second, third, fourt));
                                 tris.Add(new Triangle(first, second, fourt));
+                            }
+                            else
+                            {
+                                tris.Add(new Triangle(result[k].Item2));
                             }
                         }
                     }
