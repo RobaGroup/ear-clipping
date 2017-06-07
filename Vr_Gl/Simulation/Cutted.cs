@@ -1,4 +1,4 @@
-﻿using Intersection;
+using Intersection;
 using System;
 using System.Collections.Generic;
 using System.Linq;

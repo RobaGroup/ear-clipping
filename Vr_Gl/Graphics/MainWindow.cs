@@ -11,10 +11,11 @@ using Vr_Gl.Model;
 using OpenTK.Input;
 using Vr_Gl.Simulation;
 using Triangulation;
+using Vr_Gl.Properties;
 
 namespace Vr_Gl.Graphics
 {
-    class MainWindow : GameWindow
+    public class MainWindow : GameWindow
     {
         double x = 0, y = 0, z = 0;
         double rotx = 0, roty = 0, rotz = 0;
@@ -22,6 +23,17 @@ namespace Vr_Gl.Graphics
         Triangulation.Vector3 move = new Triangulation.Vector3(0, 0, 0);
         public Cutter Cutter { get; set; }
         public Cutted Cutted { get; set; }
+
+        private Table _table;
+        private Room _room;
+        private Light _light;
+        
+        public MainWindow(Cutter cutter, Cutted cutted)
+        {
+            this.Cutter = cutter;
+            this.Cutted = cutted;
+        }
+        
         public MainWindow(string cutterFileName, string cuttedFileName)
         {
             Cutter = new Cutter(cutterFileName);
@@ -30,8 +42,11 @@ namespace Vr_Gl.Graphics
 
         public MainWindow(List<Triangle> cutterTris, List<Triangle> cuttedTris)
         {
-            Cutter = new Cutter(cutterTris);
-            Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5));
+            Cutter = new Cutter(cutterTris, @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Metal3.bmp");
+            Cutted = new Cutted(cuttedTris, Cutter, new Triangulation.Vector3(-3, 0, -1.5), @"D:\University\4th-AI\VR\VR-project\VR-Project\VR-Project\Resources\Base.bmp");
+            _room=new Room();
+            _table=new Table();
+            _light=new Light();
         }
 
         public MainWindow(Cutter cutter, Cutted cutted)
@@ -65,10 +80,15 @@ namespace Vr_Gl.Graphics
                 Cutter.Move(move);
                 Cutted.Update();
             }
-            //Cutter.Draw(new Triangulation.Vector3(1, 1, 1));
-            Cutter.Draw();
-            //Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
-            Cutted.Draw();
+            _light=new Light();
+            ////Cutter.Draw(new Triangulation.Vector3(1, 1, 1));
+            //Cutter.Draw();
+            ////Cutted.Draw(new Triangulation.Vector3(0.2, 0.6, 0.4));
+            //Cutted.Draw();
+           // _room.Draw();           
+            _table.Draw();
+           
+
             SwapBuffers();
             clicked = false;
             move = new Triangulation.Vector3(0, 0, 0);
