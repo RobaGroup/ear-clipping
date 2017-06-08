@@ -107,6 +107,12 @@ namespace Vr_Gl.Graphics
             float delta = 0.15f;
             switch (key)
             {
+                case "Numpad1":
+                {
+                    x=0;
+                    break;
+
+                }
                 case "k":
                     z -= 1;
                     break;
@@ -168,6 +174,8 @@ namespace Vr_Gl.Graphics
                     clicked = true;
                     break;
             }
+
+            
         }
     }
 }
