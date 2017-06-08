@@ -44,9 +44,9 @@ namespace Vr_Gl
               //  new Triangle(new Vector3(0, 0, 0), new Vector3(2, 0, 0), new Vector3(0, 0, -2)),
               //  new Triangle(new Vector3(2, 0, 0), new Vector3(2, 0, -2), new Vector3(0, 0, -2))
             }.ToList();
-            //List<Triangle> cuttedTris = new Loader(100).Load(@"D:/zune.obj");
+            List<Triangle> cuttedTrisZune = new Loader(100).Load(@"D:\Users\Admin\Documents\GitHub\VR\Vr_Gl\Resources\Zune.obj");
             Config.OnlyHoles = true;
-            using (MainWindow window = new MainWindow(cutterTrisMini, cuttedTris))
+            using (MainWindow window = new MainWindow(cutterTrisMini, cuttedTrisZune))
             {
                 window.Run(30);
             }
